@@ -124,7 +124,8 @@ const Login = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState();
   const [missing, setMissing] = useState(false);
-
+  const [imgLink, setImgLink] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   // const handleClick = async () => {
   //   if (password !== repassword || !userName || !password || !email || !name) {
@@ -152,6 +153,33 @@ const Login = () => {
   // }
   // };
 
+  const setFiles = (img) => {
+    setLoading(true);
+    if (img === undefined) {
+      console.log("image not defined");
+      return;
+    }
+    if (image.type === "image/jpeg" || image.type === "image/png") {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "react-chat-app");
+      data.append("cloud_name", "dcvv2vevf");
+      fetch("  https://api.cloudinary.com/v1_1/dcvv2vevf/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          setImgLink(data.url.toString());
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  };
+  console.log(imgLink);
   return (
     <Container>
       <Wrapper>
@@ -169,7 +197,7 @@ const Login = () => {
               hidden
               id="image"
               type="file"
-              onChange={(e) => setImage(e.target.value)}
+              onChange={(e) => setFiles(e.target.files[0])}
             />
             <Label for="image">Upload your picture</Label>
           </InputContainer>
