@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 const Container = Styled.div`
 height:100vh;
 background-color:#f8f9fa;
@@ -96,24 +96,31 @@ const Login = () => {
   const [password, setPassword] = useState();
   const [missing, setMissing] = useState(false);
   const [error, setError] = useState(false);
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const isFetching = useSelector((state) => state.user.isFetching);
-  // const error = useSelector((state) => state.user.error);
-  // const user = {
-  //   username: userName,
-  //   password: password,
-  // };
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-  //   if (!password || !userName) {
-  //     setMissing(true);
-  //     return;
-  //   }
-  //   setMissing(false);
-  //   login(dispatch, user);
-  // };
-  // console.log(error);
+
+  const user = {
+    username: userName,
+    password: password,
+  };
+  const handleClick = async (e) => {
+    e.preventDefault();
+    if (!password || !userName) {
+      setMissing(true);
+      return;
+    }
+    setMissing(false);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/user/login",
+        user
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
+  };
+
+  console.log(error);
   return (
     <Container>
       <Wrapper>
@@ -143,7 +150,9 @@ const Login = () => {
           ></Input>
           <label>Remember Me</label>
         </CheckboxContainer>
-        <Button type="submit">Login</Button>
+        <Button type="submit" onClick={handleClick}>
+          Login
+        </Button>
         {/* <Button type="submit" disabled={isFetching} onClick={handleClick}>
           Login
         </Button> */}

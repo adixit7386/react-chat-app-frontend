@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { Mobile } from "../responsive";
-
+import axios from "axios";
+import Toast from "../components/Toast";
 const Container = Styled.div`
 height:100vh;
 background-color:#f8f9fa;
@@ -126,42 +127,58 @@ const Login = () => {
   const [missing, setMissing] = useState(false);
   const [imgLink, setImgLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isnotification, setIsNotification] = useState(false);
+  const [notification, setNotification] = useState("");
   const navigate = useNavigate();
-  // const handleClick = async () => {
-  //   if (password !== repassword || !userName || !password || !email || !name) {
-  //     setMissing(true);
-  //     return;
-  //   }
-  //   setMissing(false);
-
-  //   user.username = userName;
-  //   user.email = email;
-  //   user.password = password;
-  //   user.name = name;
-
-  // try {
-  //   const res = await publicRequest.post("/auth/register", user);
-  //   console.log(res.data);
-  //   if (res.status === 201) {
-  //     navigate("/login");
-  //   } else if (res.status === 500) {
-  //     setError(true);
-  //   }
-  // } catch (err) {
-  //   console.log(err);
-  //   setError(err);
-  // }
-  // };
-
-  const setFiles = (img) => {
-    setLoading(true);
-    if (img === undefined) {
-      console.log("image not defined");
+  const ManageNotification = (message) => {
+    let msg = message;
+    setTimeout(() => {
+      setIsNotification(true);
+      setNotification(msg);
+    }, 1000);
+    setIsNotification(false);
+  };
+  const handleClick = async () => {
+    if (password !== repassword || !userName || !password || !email || !name) {
+      setMissing(true);
       return;
     }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
+    setMissing(false);
+
+    user.username = userName;
+    user.email = email;
+    user.password = password;
+    user.name = name;
+    user.image = imgLink;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/user/register",
+        user
+      );
+      console.log(res.data);
+      if (res.status === 201) {
+        navigate("/login");
+      } else if (res.status === 500) {
+        setError(true);
+      }
+    } catch (err) {
+      console.log(err);
+      setError(err);
+    }
+  };
+
+  const setFiles = (img) => {
+    setImage(img);
+    setLoading(true);
+    if (img === undefined) {
+      ManageNotification("Please select the image");
+      return;
+    }
+
+    if (img.type === "image/jpeg" || img.type === "image/png") {
       const data = new FormData();
-      data.append("file", image);
+      data.append("file", img);
       data.append("upload_preset", "react-chat-app");
       data.append("cloud_name", "dcvv2vevf");
       fetch("  https://api.cloudinary.com/v1_1/dcvv2vevf/image/upload", {
@@ -179,10 +196,11 @@ const Login = () => {
         });
     }
   };
-  console.log(imgLink);
+
   return (
     <Container>
       <Wrapper>
+        {isnotification && <Toast message={notification} />}
         <Title>Chat</Title>
         <LoginText>Please Register Here</LoginText>
         <InputWrapper>
@@ -199,7 +217,7 @@ const Login = () => {
               type="file"
               onChange={(e) => setFiles(e.target.files[0])}
             />
-            <Label for="image">Upload your picture</Label>
+            <Label htmlFor="image">Upload your picture</Label>
           </InputContainer>
           <InputContainer name="username">
             <Input
@@ -229,7 +247,9 @@ const Login = () => {
             />
           </InputContainer>
         </InputWrapper>
-        <Button type="button">Register</Button>
+        <Button type="button" onClick={handleClick}>
+          Register
+        </Button>
 
         <CheckboxContainer>
           <Warning>
