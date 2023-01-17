@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mobile } from "../responsive";
 import axios from "axios";
 import Toast from "../components/Toast";
+
 const Container = Styled.div`
+
 height:100vh;
 background-color:#f8f9fa;
 display:flex;
@@ -135,12 +137,13 @@ const Login = () => {
     setTimeout(() => {
       setIsNotification(true);
       setNotification(msg);
-    }, 1000);
+    }, 10);
     setIsNotification(false);
   };
   const handleClick = async () => {
     if (password !== repassword || !userName || !password || !email || !name) {
-      setMissing(true);
+      ManageNotification("Please fill all the details");
+
       return;
     }
     setMissing(false);

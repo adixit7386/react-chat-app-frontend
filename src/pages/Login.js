@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+} from "../redux/userReducer";
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
@@ -92,6 +99,7 @@ cursor:pointer;
 const Warning = Styled.span`
 margin-top:10px;`;
 const Login = () => {
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [missing, setMissing] = useState(false);
@@ -109,12 +117,15 @@ const Login = () => {
     }
     setMissing(false);
     try {
+      dispatch(loginStart());
       const res = await axios.post(
         "http://localhost:5000/api/user/login",
         user
       );
-      console.log(res.data);
+
+      dispatch(loginSuccess(res.data));
     } catch (err) {
+      dispatch(loginFailure());
       console.log(err);
       setError(err);
     }
