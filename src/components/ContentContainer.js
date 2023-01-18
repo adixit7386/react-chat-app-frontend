@@ -34,6 +34,7 @@ overflow:scroll;
     display:none;
 }
 top:100px;
+scroll:bottom;
 align-items:center;
 justify-content:center;
 flex-direction:column;

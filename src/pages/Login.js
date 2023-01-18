@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
+import Toast from "../components/Toast";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
+import ForumIcon from "@mui/icons-material/Forum";
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
@@ -21,20 +23,19 @@ width:300px;
 
 `;
 const Title = Styled.h1`
-font-size:45px;
+font-size:40px;
+margin-top:10px;
 margin-bottom:10px;
+`;
+const Span = Styled.span`
+color:#0081B4;
+font-size:40px;
 `;
 
 const LoginText = Styled.span`
 font-size: 25px;
 margin-bottom:20px;
 margin-top:10px;
-`;
-const LoginTextOr = Styled.span`
-font-size: 14px;
-margin-top:20px;
-
-
 `;
 
 const InputContainer = Styled.div`
@@ -98,16 +99,25 @@ const Login = () => {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [missing, setMissing] = useState(false);
-  const [error, setError] = useState(false);
 
   const user = {
     username: userName,
     password: password,
   };
+  const [isnotification, setIsNotification] = useState(false);
+  const [notification, setNotification] = useState("");
+  const ManageNotification = (message) => {
+    let msg = message;
+    setTimeout(() => {
+      setIsNotification(true);
+      setNotification(msg);
+    }, 10);
+    setIsNotification(false);
+  };
   const handleClick = async (e) => {
     e.preventDefault();
     if (!password || !userName) {
-      setMissing(true);
+      ManageNotification("Please Provide all the details");
       return;
     }
     setMissing(false);
@@ -117,20 +127,33 @@ const Login = () => {
         "http://localhost:5000/api/user/login",
         user
       );
+      console.log(res.status);
+      if (res.status !== 201) {
+        ManageNotification("UserName or password is incorrect");
+        dispatch(loginFailure());
+      }
 
       dispatch(loginSuccess(res.data));
     } catch (err) {
-      dispatch(loginFailure());
+      ManageNotification("username or password is incorrect");
       console.log(err);
-      setError(err);
+      dispatch(loginFailure());
     }
   };
+  const IconStyle = {
+    height: "35px",
+    width: "35px",
+    color: "#0081B4",
+  };
 
-  console.log(error);
   return (
     <Container>
+      {isnotification && <Toast message={notification} />}
       <Wrapper>
-        <Title>Chat</Title>
+        <ForumIcon style={IconStyle} />
+        <Title>
+          live<Span>Chat</Span>
+        </Title>
         <LoginText>Please Login</LoginText>
         <InputContainer name="username">
           <Input
@@ -169,24 +192,6 @@ const Login = () => {
             Register
           </Link>
         </Warning>
-
-        {error && (
-          <Warning style={{ color: "red" }}>
-            username or password is wrong
-          </Warning>
-        )}
-        {missing && (
-          <Warning style={{ color: "red" }}>
-            please fill all the required details
-          </Warning>
-        )}
-        <LoginTextOr>OR</LoginTextOr>
-        <LoginText>
-          <strong onClick={() => {}} style={{ cursor: "pointer" }}>
-            Continue
-          </strong>{" "}
-          Without Login
-        </LoginText>
       </Wrapper>
     </Container>
   );

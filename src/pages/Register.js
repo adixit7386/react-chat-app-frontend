@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mobile } from "../responsive";
 import axios from "axios";
 import Toast from "../components/Toast";
-
+import ForumIcon from "@mui/icons-material/Forum";
 const Container = Styled.div`
 
 height:100vh;
@@ -24,8 +24,13 @@ width:700px;
 
 `;
 const Title = Styled.h1`
-  font-size:45px;
-  margin-bottom:10px;
+font-size:40px;
+margin-top:10px;
+margin-bottom:10px;
+`;
+const Span = Styled.span`
+color:#0081B4;
+font-size:40px;
 `;
 
 const LoginText = Styled.span`
@@ -129,9 +134,9 @@ const Login = () => {
   const [missing, setMissing] = useState(false);
   const [imgLink, setImgLink] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [isnotification, setIsNotification] = useState(false);
   const [notification, setNotification] = useState("");
-  const navigate = useNavigate();
   const ManageNotification = (message) => {
     let msg = message;
     setTimeout(() => {
@@ -141,8 +146,13 @@ const Login = () => {
     setIsNotification(false);
   };
   const handleClick = async () => {
-    if (password !== repassword || !userName || !password || !email || !name) {
-      ManageNotification("Please fill all the details");
+    if (!password || !repassword || !userName || !password || !email || !name) {
+      ManageNotification("Please Provide all the details");
+
+      return;
+    }
+    if (password !== repassword) {
+      ManageNotification("Passwords do not match");
 
       return;
     }
@@ -162,12 +172,9 @@ const Login = () => {
       console.log(res.data);
       if (res.status === 201) {
         navigate("/login");
-      } else if (res.status === 500) {
-        setError(true);
       }
     } catch (err) {
-      console.log(err);
-      setError(err);
+      ManageNotification("This user already exists");
     }
   };
 
@@ -199,12 +206,19 @@ const Login = () => {
         });
     }
   };
-
+  const IconStyle = {
+    height: "35px",
+    width: "35px",
+    color: "#0081B4",
+  };
   return (
     <Container>
       <Wrapper>
         {isnotification && <Toast message={notification} />}
-        <Title>Chat</Title>
+        <ForumIcon style={IconStyle} />
+        <Title>
+          live<Span>Chat</Span>
+        </Title>
         <LoginText>Please Register Here</LoginText>
         <InputWrapper>
           <InputContainer name="name">
@@ -265,25 +279,6 @@ const Login = () => {
         <Warning>
           I agree with the <b style={{ cursor: "pointer" }}>PRIVACY POLICY</b>
         </Warning>
-        {repassword && password !== repassword && (
-          <Warning>Passwords do not match</Warning>
-        )}
-        {error && (
-          <Warning style={{ color: "red" }}>
-            this account already exists
-          </Warning>
-        )}
-        {missing && (
-          <Warning style={{ color: "red" }}>
-            please fill all the required details
-          </Warning>
-        )}
-        <RegisterTextOr>OR</RegisterTextOr>
-        <LoginText>
-          <strong onClick={() => {}} style={{ cursor: "pointer" }}>
-            Continue
-          </strong>{" "}
-        </LoginText>
       </Wrapper>
     </Container>
   );
