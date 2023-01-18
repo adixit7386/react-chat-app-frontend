@@ -14,9 +14,9 @@ border-radius:10px;
 display:flex;align-items:center;
 justify-content:center;
 `;
-const Heading = Styled.span`
-font-size:20px;
-`;
+// const Heading = Styled.span`
+// font-size:20px;
+// `;
 const Toast = ({ message }) => {
   const [visible, setVisible] = useState(true);
   setTimeout(() => {

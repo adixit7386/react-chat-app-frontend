@@ -1,6 +1,5 @@
 import React from "react";
 import Home from "./pages/Home";
-import ChatPage from "./pages/ChatPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import {
@@ -15,10 +14,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
   },
-  {
-    path: "/chats",
-    element: <ChatPage />,
-  },
+
   {
     path: "/login",
     element: <Login />,

@@ -12,6 +12,7 @@ background-color:white;
 position:sticky;
 z-index:2;
 top:0px;
+background-color:#f8f9fa;
 justify-content:center;
 height:59px;
 padding-left:20px;

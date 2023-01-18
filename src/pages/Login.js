@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import Styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  logout,
-} from "../redux/userReducer";
+import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
