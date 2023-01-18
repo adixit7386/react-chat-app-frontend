@@ -41,13 +41,10 @@ align-items:center;
 justify-content:center;
 padding:7px 12px;
 border-radius:5px;
-background-color:white;
-box-shadow:0px 0px 5px gray;
-
 `;
 const ChatName = Styled.h1`
 margin:0px;
-font-size:25px;
+font-size:20px;
 `;
 const LastMessage = Styled.span`
 `;
@@ -116,11 +113,7 @@ flex:1;
 display:flex;
 align-items:center;
 justify-content:center;`;
-const TextContainer = Styled.div`
-`;
-const Span = Styled.span`
-font-size:20px;
-font-weight:500;`;
+
 const IconContainer = Styled.div`
 height:35px;
 width:35px;
