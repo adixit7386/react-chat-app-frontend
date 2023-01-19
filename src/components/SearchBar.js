@@ -48,6 +48,7 @@ cursor:pointer;
 &:hover{
   box-shadow:0px 0px 10px grey;
 }
+transition:all 0.5s ease;
 border-radius:10px;
 padding:5px 12px;
 margin-top:10px;

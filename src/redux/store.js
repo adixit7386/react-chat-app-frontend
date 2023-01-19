@@ -12,6 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import userReducer from "./userReducer";
 import sideReducer from "./sideReducer";
+import personReducer from "./personReducer";
 const persistConfig = {
   key: "root",
   version: 1,
@@ -20,6 +21,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   sidebar: sideReducer,
+  personbar: personReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

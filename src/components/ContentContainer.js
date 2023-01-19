@@ -1,23 +1,27 @@
 import React from "react";
 import Styled from "styled-components";
-
+import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
+import { useDispatch, useSelector } from "react-redux";
+
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
 `;
 const Wrapper = Styled.div`
 padding:20px;
+padding-top:0px;
 height:calc(100vh - 100px);
 
 `;
 const HeadContainer = Styled.div`
 height:50px;
+display:flex;
+padding:10px;
+align-items:center;
+justify-content:flex-start;
 `;
 
-const Heading = Styled.h1`
-font-size:25px;
-margin:0px;`;
 const ContentWrapper = Styled.div`
 background-color:#f8f9fa;
 height:calc(100vh - 130px);
@@ -155,12 +159,37 @@ font-size:15px;
 color:grey;`;
 const MessageText = Styled.span`
 font-size:18px;`;
+const UserIconContainer = Styled.div`
+display:flex;
+align-items:center;
+justify-content:center;
+`;
+const UserDetails = Styled.div`
+
+flex-direction:column;`;
+const Heading = Styled.span`
+font-size:24px;
+font-weight:500;
+color:black;`;
+
+const Img = Styled.img`
+margin:0px 20px;
+height:45px ;
+border-radius:50%;
+width:45px;`;
+
 const ContentContainer = () => {
   return (
     <Container>
       <Wrapper>
+        <PersonContainer></PersonContainer>
         <HeadContainer>
-          <Heading>Animesh</Heading>
+          <UserIconContainer>
+            <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
+          </UserIconContainer>
+          <UserDetails>
+            <Heading>Nitin Kumar</Heading>
+          </UserDetails>
         </HeadContainer>
         <ContentWrapper>
           <ChatContainer>

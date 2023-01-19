@@ -4,6 +4,7 @@ import Styled from "styled-components";
 import ContentContainer from "../components/ContentContainer";
 import SidebarContainer from "../components/SidebarContainer";
 import SearchBar from "../components/SearchBar";
+
 const Container = Styled.div`
 `;
 const Wrapper = Styled.div`
@@ -16,6 +17,7 @@ const Home = () => {
   return (
     <Container>
       <SearchBar />
+
       <Navbar />
       <Wrapper>
         <SidebarContainer />
