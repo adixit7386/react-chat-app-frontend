@@ -6,12 +6,12 @@ const sideSlice = createSlice({
     toggle: false,
   },
   reducers: {
-    togglePersonBar: (state) => {
+    toggleSidebar: (state) => {
       state.toggle = !state.toggle;
     },
   },
 });
 
-export const { togglePersonBar } = sideSlice.actions;
+export const { toggleSidebar } = sideSlice.actions;
 
 export default sideSlice.reducer;

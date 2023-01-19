@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const sideSlice = createSlice({
-  name: "personbar",
+  name: "accountbar",
   initialState: {
     toggle: false,
   },
   reducers: {
-    togglePersonBar: (state) => {
+    toggleAccountBar: (state) => {
       state.toggle = !state.toggle;
     },
   },
 });
 
-export const { togglePersonBar } = sideSlice.actions;
+export const { toggleAccountBar } = sideSlice.actions;
 
 export default sideSlice.reducer;

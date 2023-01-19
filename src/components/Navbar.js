@@ -5,8 +5,10 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import MailIcon from "@mui/icons-material/Mail";
 import ForumIcon from "@mui/icons-material/Forum";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
+import { toggleAccountBar } from "../redux/accountReducer";
+import AccountContainer from "../components/AccountContainer";
 const Container = Styled.div`
 display:flex;
 align-items:center;
@@ -125,9 +127,13 @@ const Navbar = () => {
     color: "black",
     cursor: "pointer",
   };
-
+  const toggleBar = useSelector((state) => state.accountbar.toggle);
+  const handleClick = () => {
+    dispatch(toggleAccountBar());
+  };
   return (
     <Container>
+      <AccountContainer toggle={toggleBar}></AccountContainer>
       <Wrapper>
         <Left>
           <IconContainer>
@@ -163,7 +169,7 @@ const Navbar = () => {
               style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
             />
           </DarkModeIconContainer>
-          <UserContainer clicked={true}>
+          <UserContainer clicked={true} onClick={() => handleClick}>
             <UserNameContainer>Aditya</UserNameContainer>
             <Img
               src={

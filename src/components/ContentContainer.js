@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
-
+import { togglePersonBar } from "../redux/personReducer";
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
@@ -78,16 +78,13 @@ font-size: 18px;
 font-size: 18px;
 flex: 1;
 border:none;
-
 height: 30px;
 outline:none;
-
 &:focus{
  font-size: 18px;
 font-size: 18px;
 flex: 1;
 border:none;
-
 height: 35px;
 outline:none;
 }
@@ -162,14 +159,16 @@ font-size:18px;`;
 const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
+cursor:pointer;
 justify-content:center;
 `;
 const UserDetails = Styled.div`
-
+cursor:pointer;
 flex-direction:column;`;
 const Heading = Styled.span`
 font-size:24px;
 font-weight:500;
+
 color:black;`;
 
 const Img = Styled.img`
@@ -179,15 +178,20 @@ border-radius:50%;
 width:45px;`;
 
 const ContentContainer = () => {
+  const toggleBar = useSelector((state) => state.personbar.toggle);
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(togglePersonBar());
+  };
   return (
     <Container>
       <Wrapper>
-        <PersonContainer></PersonContainer>
+        <PersonContainer toggle={toggleBar}></PersonContainer>
         <HeadContainer>
-          <UserIconContainer>
+          <UserIconContainer onClick={handleClick}>
             <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
           </UserIconContainer>
-          <UserDetails>
+          <UserDetails onClick={handleClick}>
             <Heading>Nitin Kumar</Heading>
           </UserDetails>
         </HeadContainer>

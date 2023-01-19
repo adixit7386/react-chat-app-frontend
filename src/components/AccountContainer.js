@@ -1,7 +1,7 @@
 import React from "react";
 import Styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { togglePersonBar } from "../redux/personReducer";
+import { toggleAccountBar } from "../redux/accountReducer";
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -76,7 +76,7 @@ const PersonContainer = ({ toggle }) => {
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
-      dispatch(togglePersonBar());
+      dispatch(toggleAccountBar());
     }
   };
   return (
@@ -100,10 +100,10 @@ const PersonContainer = ({ toggle }) => {
         <CloseContainer>
           <Button
             onClick={() => {
-              dispatch(togglePersonBar());
+              dispatch(toggleAccountBar());
             }}
           >
-            Close
+            Logout
           </Button>
         </CloseContainer>
       </Container>
