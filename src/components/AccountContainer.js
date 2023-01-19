@@ -2,6 +2,8 @@ import React from "react";
 import Styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
+import { logout } from "../redux/userReducer";
+import { useNavigate } from "react-router-dom";
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -73,12 +75,15 @@ background-color:#0081B4;
 color:white;
 height:15%;`;
 const PersonContainer = ({ toggle }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
+      localStorage.removeItem("root");
       dispatch(toggleAccountBar());
     }
   };
+  console.log(localStorage);
   return (
     <ParentContainer
       className="parent"
@@ -101,6 +106,7 @@ const PersonContainer = ({ toggle }) => {
           <Button
             onClick={() => {
               dispatch(toggleAccountBar());
+              navigate("/login");
             }}
           >
             Logout

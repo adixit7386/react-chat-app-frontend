@@ -128,7 +128,8 @@ const Navbar = () => {
     cursor: "pointer",
   };
   const toggleBar = useSelector((state) => state.accountbar.toggle);
-  const handleClick = () => {
+
+  const handleClick = async () => {
     dispatch(toggleAccountBar());
   };
   return (
