@@ -169,7 +169,7 @@ const Navbar = () => {
               style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
             />
           </DarkModeIconContainer>
-          <UserContainer clicked={true} onClick={() => handleClick}>
+          <UserContainer clicked={true} onClick={handleClick}>
             <UserNameContainer>Aditya</UserNameContainer>
             <Img
               src={
