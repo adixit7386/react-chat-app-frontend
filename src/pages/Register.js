@@ -125,15 +125,15 @@ const Label = Styled.label``;
 const Login = () => {
   let user = {};
   const [userName, setUserName] = useState("");
-  const [error, setError] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [name, setName] = useState("");
-  const [image, setImage] = useState();
-  const [missing, setMissing] = useState(false);
-  const [imgLink, setImgLink] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [imgLink, setImgLink] = useState("");
+
   const navigate = useNavigate();
   const [isnotification, setIsNotification] = useState(false);
   const [notification, setNotification] = useState("");
@@ -156,7 +156,6 @@ const Login = () => {
 
       return;
     }
-    setMissing(false);
 
     user.username = userName;
     user.email = email;
@@ -179,7 +178,6 @@ const Login = () => {
   };
 
   const setFiles = (img) => {
-    setImage(img);
     setLoading(true);
     if (img === undefined) {
       ManageNotification("Please select the image");
@@ -234,7 +232,12 @@ const Login = () => {
               type="file"
               onChange={(e) => setFiles(e.target.files[0])}
             />
-            <Label htmlFor="image">Upload your picture</Label>
+            <Label
+              htmlFor="image"
+              style={{ width: "90%", color: "grey", cursor: "pointer" }}
+            >
+              Upload your picture
+            </Label>
           </InputContainer>
           <InputContainer name="username">
             <Input

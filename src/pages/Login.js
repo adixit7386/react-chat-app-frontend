@@ -98,7 +98,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [missing, setMissing] = useState(false);
 
   const user = {
     username: userName,
@@ -120,7 +119,7 @@ const Login = () => {
       ManageNotification("Please Provide all the details");
       return;
     }
-    setMissing(false);
+
     try {
       dispatch(loginStart());
       const res = await axios.post(

@@ -1,10 +1,12 @@
 import React from "react";
 import Styled from "styled-components";
-// import HelpIcon from "@mui/icons-material/Help";
-// import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import MailIcon from "@mui/icons-material/Mail";
 import ForumIcon from "@mui/icons-material/Forum";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import { useDispatch } from "react-redux";
+import { toggleSidebar } from "../redux/sideReducer";
 const Container = Styled.div`
 display:flex;
 align-items:center;
@@ -51,58 +53,11 @@ const Span = Styled.span`
 color:#0081B4;
 font-size:32px;
 `;
-// const Center = Styled.div`
-// flex:1.3;
-// display:flex;
-// align-items:center;
-// justify-content:center;`;
-
-// const InputContainer = Styled.div`
-// flex:9;
-// height:35px;
-// display:flex;
-// align-items:center;
-// jusify-content:center;
-// border:solid 2px gray;
-// border-top-left-radius:50px;
-// border-bottom-left-radius:50px;
-// padding:2px 20px;
-
-// `;
-// const Input = Styled.input`
-// background-color:white;
-// font-size: 18px;
-// font-size: 18px;
-// flex: 1;
-// border:none;
-
-// height: 30px;
-// outline:none;
-
-// &:focus{
-//  font-size: 18px;
-// font-size: 18px;
-// flex: 1;
-// border:none;
-
-// height: 35px;
-// outline:none;
-// }
-
-// `;
-
-// const SearchIconContainer = Styled.div`
-// height:35px;
-// width:35px;
-// border:solid 2px gray;
-// border-left:none;
-// display:flex;
-// align-items:center;
-// jusify-content:center;
-// border-top-right-radius:50px;
-// border-bottom-right-radius:50px;
-// padding:2px 4px;
-// `;
+const Center = Styled.div`
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;`;
 
 const Right = Styled.div`
 flex:1;
@@ -127,6 +82,10 @@ width:30px;
 border-radius:50%;
 margin-left:10px;
 `;
+const SpanSearch = Styled.span`
+font-size:24px;
+cursor:pointer;
+color:grey;`;
 
 const DarkModeIconContainer = Styled.div`
 display:flex;
@@ -140,12 +99,19 @@ justify-content:center;
 padding:5px 10px;`;
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const DarkMode = false;
 
   const IconStyle = {
     height: "35px",
     width: "35px",
     color: "#0081B4",
+  };
+  const IconStyleSearch = {
+    height: "35px",
+    width: "35px",
+    color: "grey",
+    cursor: "pointer",
   };
   const IconStyleDarkMode = {
     height: "30px",
@@ -165,6 +131,19 @@ const Navbar = () => {
       <Wrapper>
         <Left>
           <IconContainer>
+            <SearchRoundedIcon
+              onClick={() => dispatch(toggleSidebar())}
+              style={IconStyleSearch}
+            />
+          </IconContainer>
+          <TitleContainer>
+            <SpanSearch onClick={() => dispatch(toggleSidebar())}>
+              Search Users
+            </SpanSearch>
+          </TitleContainer>
+        </Left>
+        <Center>
+          <IconContainer>
             <ForumIcon style={IconStyle} />
           </IconContainer>
           <TitleContainer>
@@ -172,26 +151,7 @@ const Navbar = () => {
               live<Span>Chat</Span>
             </Title>
           </TitleContainer>
-        </Left>
-        {/* <Center>
-          <InputContainer>
-            <Input placeholder="Search Products" className="NavbarInput" />
-          </InputContainer>
-          <SearchIconContainer>
-            <SearchRoundedIcon
-              style={{
-                height: "35px",
-                width: "35px",
-                cursor: "pointer",
-                color: "gray",
-                "@media max-width:(480px)": {
-                  height: "30px",
-                  width: "30px",
-                },
-              }}
-            />
-          </SearchIconContainer>
-        </Center> */}
+        </Center>
         <Right>
           <MailIconContainer>
             <MailIcon
