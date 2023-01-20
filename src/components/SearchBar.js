@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Styled from "styled-components";
 import { useSelector } from "react-redux";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
+import { useNavigate } from "react-router-dom";
+import User from "../redux/exportUser";
+import Toast from "../components/Toast";
+import axios from "axios";
 const ParentContainer = Styled.div`
 position:absolute;
 visibility:${(props) => (props.toggle === true ? "visible" : "hidden")};
@@ -170,8 +174,10 @@ height:50px ;
 border-radius:50%;
 width:50px;`;
 const SearchBar = () => {
+  const navigate = useNavigate();
   let toggle = useSelector((state) => state.sidebar.toggle);
-  console.log(toggle);
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
   const IconStyleSearch = {
     height: "35px",
     width: "35px",
@@ -179,12 +185,64 @@ const SearchBar = () => {
     cursor: "pointer",
   };
 
+  const createChat = async (userId) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/chat/",
+        { userId: userId },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${User.accessToken}`,
+          },
+        }
+      );
+      navigate("/");
+      dispatch(toggleSidebar());
+    } catch (err) {
+      ManageNotification("couldn't create a chat");
+    }
+  };
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       dispatch(toggleSidebar());
     }
   };
+  let user;
+
+  if (localStorage.getItem("persist:root") !== undefined) {
+    if (JSON.parse(localStorage?.getItem("persist:root"))?.user !== undefined) {
+      user = JSON.parse(
+        JSON.parse(localStorage?.getItem("persist:root"))?.user
+      )?.currentUser;
+    }
+  }
+  const [isnotification, setIsNotification] = useState(false);
+  const [notification, setNotification] = useState("");
+  const ManageNotification = (message) => {
+    let msg = message;
+    setTimeout(() => {
+      setIsNotification(true);
+      setNotification(msg);
+    }, 1000);
+    setIsNotification(false);
+  };
+  const handleClickSearch = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/user?search=${search}`,
+        { headers: { Authorization: `Bearer ${user.accessToken}` } }
+      );
+      setData(data);
+      if (data.length === 0) {
+        ManageNotification("No User Found");
+      }
+    } catch (error) {
+      ManageNotification("Search Failed");
+    }
+  };
+
   return (
     <ParentContainer
       toggle={toggle}
@@ -193,6 +251,7 @@ const SearchBar = () => {
         handleClick(e);
       }}
     >
+      {isnotification && <Toast message={notification} />}
       <Container toggle={toggle}>
         <Wrapper>
           <ItemTop item={"head"}>
@@ -211,10 +270,15 @@ const SearchBar = () => {
           <ItemTop item={"head"}>
             <Center>
               <InputContainer>
-                <Input placeholder="Search Users" className="NavbarInput" />
+                <Input
+                  placeholder="Search Users"
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="NavbarInput"
+                />
               </InputContainer>
               <SearchIconContainer>
                 <SearchRoundedIcon
+                  onClick={handleClickSearch}
                   style={{
                     height: "35px",
                     width: "35px",
@@ -229,258 +293,22 @@ const SearchBar = () => {
               </SearchIconContainer>
             </Center>
           </ItemTop>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
-          <Item>
-            <UserIconContainer>
-              <Img
-                src={"https://avatars.githubusercontent.com/u/92628841?v=4"}
-              />
-            </UserIconContainer>
-            <UserDetails>
-              <Heading>Nitin Kumar</Heading>
-              <Br />
-              <Username>nitinkumar@234.com</Username>
-            </UserDetails>
-          </Item>
+          {data?.map((item) => (
+            <Item
+              onClick={() => {
+                createChat(item._id);
+              }}
+            >
+              <UserIconContainer>
+                <Img src={item.image} />
+              </UserIconContainer>
+              <UserDetails>
+                <Heading>{item.name}</Heading>
+                <Br />
+                <Username>{item.username.slice(0, 18)}</Username>
+              </UserDetails>
+            </Item>
+          ))}
         </Wrapper>
       </Container>
     </ParentContainer>

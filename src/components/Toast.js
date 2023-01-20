@@ -7,6 +7,7 @@ height:100vh;
 width:100vw;
 visibility:${(props) => (props.visibility === true ? "visible" : "hidden")};
 overflow:hidden;
+z-index:8;
 display:flex;
 justify-content:flex-end;
 
@@ -17,7 +18,7 @@ height:50px;
 width:300px;
 color:white;
 background-color:#C64343;
-z-index:3;
+z-index:8;
 top:20px;
 right:${(props) => (props.visibility ? "20px" : "-600px")};
 transition:all 0.5s ease;

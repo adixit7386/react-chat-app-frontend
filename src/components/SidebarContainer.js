@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import AddIcon from "@mui/icons-material/Add";
+import axios from "axios";
+import User from "../redux/exportUser";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -122,6 +124,28 @@ cursor:pointer;
 background-color:#f8f9fa;
 `;
 const SidebarContainer = () => {
+  const [chats, setChats] = useState([]);
+  useEffect(() => {
+    const fetchChat = async (userId) => {
+      console.log("hello world ");
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/chat/",
+
+          {
+            headers: {
+              Authorization: `Bearer ${User.accessToken}`,
+            },
+          }
+        );
+        setChats(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchChat();
+  }, []);
+  console.log(chats);
   const IconStyle = {
     height: "35px",
     width: "35px",
@@ -155,50 +179,16 @@ const SidebarContainer = () => {
             </IconContainer>
           </Right>
         </ChatContainerHead>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
-        <ChatContainer>
-          <ChatName>Groupchat</ChatName>
-          <LastMessage>animesh:hello</LastMessage>
-        </ChatContainer>
+        {chats?.map((item) => (
+          <ChatContainer>
+            <ChatName>{item.ChatName}</ChatName>
+            <LastMessage>
+              {item.latestMessage.content
+                ? item.latestMessage
+                : "send first message"}
+            </LastMessage>
+          </ChatContainer>
+        ))}
       </Wrapper>
     </Container>
   );

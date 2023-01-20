@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Styled from "styled-components";
 import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
+
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
@@ -180,6 +181,7 @@ width:45px;`;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
+
   const handleClick = () => {
     dispatch(togglePersonBar());
   };
