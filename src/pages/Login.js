@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
 import ForumIcon from "@mui/icons-material/Forum";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
@@ -96,6 +97,7 @@ const Warning = Styled.span`
 margin-top:10px;`;
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
 
@@ -119,19 +121,20 @@ const Login = () => {
       ManageNotification("Please Provide all the details");
       return;
     }
-
+    console.log("res.status");
     try {
       dispatch(loginStart());
       const res = await axios.post(
         "http://localhost:5000/api/user/login",
         user
       );
-      console.log(res.status);
+
       if (res.status !== 201) {
         ManageNotification("UserName or password is incorrect");
         dispatch(loginFailure());
       }
-
+      console.log(res.data);
+      navigate("/");
       dispatch(loginSuccess(res.data));
     } catch (err) {
       ManageNotification("username or password is incorrect");

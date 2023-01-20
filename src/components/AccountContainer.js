@@ -2,7 +2,6 @@ import React from "react";
 import Styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
-import { logout } from "../redux/userReducer";
 import { useNavigate } from "react-router-dom";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -50,6 +49,7 @@ height:100px;
 margin:0px;
 width:100px ;
 border-radius:50%;
+object-fit:cover;
 border:solid 2px green;
 `;
 
@@ -77,13 +77,24 @@ height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  let user;
+
+  if (localStorage.getItem("persist:root") !== undefined) {
+    if (JSON.parse(localStorage?.getItem("persist:root"))?.user !== undefined) {
+      user = JSON.parse(
+        JSON.parse(localStorage?.getItem("persist:root"))?.user
+      )?.currentUser;
+    }
+  }
+
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       localStorage.removeItem("root");
       dispatch(toggleAccountBar());
     }
   };
-  console.log(localStorage);
+
   return (
     <ParentContainer
       className="parent"
@@ -94,13 +105,13 @@ const PersonContainer = ({ toggle }) => {
     >
       <Container>
         <HeadingContainer>
-          <Heading>Nitin Kumar</Heading>
+          <Heading>{user.name}</Heading>
         </HeadingContainer>
         <ImageContainer>
-          <Image src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
+          <Image src={user.image} />
         </ImageContainer>
         <EmailContainer>
-          <HeadingEmail>nitinkumar@234.com</HeadingEmail>
+          <HeadingEmail>{user.email}</HeadingEmail>
         </EmailContainer>
         <CloseContainer>
           <Button

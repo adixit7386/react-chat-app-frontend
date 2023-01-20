@@ -83,6 +83,7 @@ height:30px;
 width:30px;
 border-radius:50%;
 margin-left:10px;
+
 `;
 const SpanSearch = Styled.span`
 font-size:24px;
@@ -124,7 +125,7 @@ const Navbar = () => {
   const IconStyleLightMode = {
     height: "30px",
     width: "30px",
-    color: "black",
+    color: "grey",
     cursor: "pointer",
   };
   const toggleBar = useSelector((state) => state.accountbar.toggle);
@@ -132,6 +133,15 @@ const Navbar = () => {
   const handleClick = async () => {
     dispatch(toggleAccountBar());
   };
+  let user;
+
+  if (localStorage.getItem("persist:root") !== undefined) {
+    if (JSON.parse(localStorage?.getItem("persist:root"))?.user !== undefined) {
+      user = JSON.parse(
+        JSON.parse(localStorage?.getItem("persist:root"))?.user
+      )?.currentUser;
+    }
+  }
   return (
     <Container>
       <AccountContainer toggle={toggleBar}></AccountContainer>
@@ -171,12 +181,8 @@ const Navbar = () => {
             />
           </DarkModeIconContainer>
           <UserContainer clicked={true} onClick={handleClick}>
-            <UserNameContainer>Aditya</UserNameContainer>
-            <Img
-              src={
-                "https://cdn4.iconfinder.com/data/icons/man-user-human-person-business-profile-avatar/100/20-1User_13-512.png"
-              }
-            />
+            <UserNameContainer>{user.name}</UserNameContainer>
+            <Img src={user.image} />
           </UserContainer>
         </Right>
       </Wrapper>
