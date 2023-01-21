@@ -160,6 +160,7 @@ const SidebarContainer = () => {
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
   };
+  console.log(chats);
   return (
     <Container>
       <Wrapper>

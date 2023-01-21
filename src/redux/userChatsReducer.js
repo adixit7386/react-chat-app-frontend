@@ -12,9 +12,17 @@ const userChatsSlice = createSlice({
     addUserChats: (state, action) => {
       state.chats.push(action.payload);
     },
+    updateUserChats: (state, action) => {
+      for (var i = 0; i < state.chats.length; i++) {
+        if (action.payload._id === state.chats[i]._id) {
+          state.chats[i] = action.payload;
+        }
+      }
+    },
   },
 });
 
-export const { setUserChats, addUserChats } = userChatsSlice.actions;
+export const { setUserChats, addUserChats, updateUserChats } =
+  userChatsSlice.actions;
 
 export default userChatsSlice.reducer;

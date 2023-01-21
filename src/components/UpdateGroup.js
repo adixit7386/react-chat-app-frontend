@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
 import User from "../redux/exportUser";
-
+import { setActiveChat } from "../redux/activeChatReducer";
+import { updateUserChats } from "../redux/userChatsReducer";
 import CloseIcon from "@mui/icons-material/Close";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -112,6 +113,17 @@ height:35px;
 &:focus{
     outline:none;
 }`;
+const UpdateInput = Styled.input`
+width:55%;
+font-size:18px;
+border-radius:5px;
+border:solid 1px grey;
+padding:3px 5px;
+height:35px;
+margin-right:5px;
+&:focus{
+    outline:none;
+}`;
 
 const ButtonContainer = Styled.div`
 display:flex;
@@ -162,12 +174,21 @@ padding:5px 12px;
 display:flex;
 align-items:center;
 justify-content:center;
-
-
 `;
 
+const UpdateButton = Styled.button`
+background-color:red;
+color:white;
+border:none;
+border-radius:5px;
+padding:2.5%;
+cursor:pointer;
+font-size:20px;`;
+
 const CreateGroup = ({ toggle }) => {
+  const activeChat = useSelector((state) => state.activechat.active);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
   const [isnotification, setIsNotification] = useState(false);
@@ -203,21 +224,74 @@ const CreateGroup = ({ toggle }) => {
       ManageNotification("Search Failed");
     }
   };
-  const handleClick = ({ userId, name }) => {
-    setAddedUsers((prev) =>
-      prev.find((item) => item.userId === userId)
-        ? prev
-        : [...prev, { userId, name }]
-    );
+  const RenameGroup = async () => {
+    if (ChatName.length === 0) {
+      return;
+    }
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${User.accessToken}` },
+      };
+
+      const { data } = await axios.put(
+        "http://localhost:5000/api/chat/rename",
+        { ChatId: activeChat._id, ChatName: ChatName },
+        config
+      );
+      dispatch(setActiveChat(data));
+      dispatch(updateUserChats(data));
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const deleteUser = ({ userId, name }) => {
-    setAddedUsers((users) => {
-      const [{ userId: userId, name: name }, ...others] = users;
-      return others;
-    });
-    // setAddedUsers((users) =>
-    //   users.splice(users.indexOf({ userId: userId, name: name }), 1)
-    // );
+  const handleClick = async ({ userId, name }) => {
+    let users = {};
+    users.userId = userId;
+    users.ChatId = activeChat._id;
+
+    try {
+      const { data } = await axios.put(
+        "http://localhost:5000/api/chat/groupadd",
+        users,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${User.accessToken}`,
+          },
+        }
+      );
+      dispatch(setActiveChat(data));
+      dispatch(updateUserChats(data));
+      console.log(data);
+    } catch (err) {
+      ManageNotification("this user already exist");
+    }
+  };
+  const deleteUser = async ({ userId, name }) => {
+    if (activeChat.users.length <= 2) {
+      return;
+    }
+    let users = {};
+    users.userId = userId;
+    users.ChatId = activeChat._id;
+
+    try {
+      const { data } = await axios.put(
+        "http://localhost:5000/api/chat/groupremove",
+        users,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${User.accessToken}`,
+          },
+        }
+      );
+      dispatch(setActiveChat(data));
+      dispatch(updateUserChats(data));
+      console.log(data);
+    } catch (err) {
+      ManageNotification("this user already exist");
+    }
   };
 
   const handleCreateGroup = async () => {
@@ -247,11 +321,11 @@ const CreateGroup = ({ toggle }) => {
       {isnotification && <Toast message={notification} />}
       <Container>
         <HeadingContainer>
-          <Heading>Create Group Chat</Heading>
+          <Heading>{activeChat.ChatName}</Heading>
         </HeadingContainer>
         <AddedUsers>
-          {addedUsers.length > 0 &&
-            addedUsers?.map((item) => (
+          {activeChat.users.length > 0 &&
+            activeChat.users?.map((item) => (
               <UserButton>
                 <NameContainer>
                   <Span>{item.name}</Span>
@@ -268,10 +342,17 @@ const CreateGroup = ({ toggle }) => {
         </AddedUsers>
 
         <InputContainer>
-          <Input
+          <UpdateInput
             placeholder="Enter Group Name"
             onChange={(e) => setChatName(e.target.value)}
           />
+          <UpdateButton
+            onClick={() => {
+              RenameGroup();
+            }}
+          >
+            Update
+          </UpdateButton>
         </InputContainer>
         <InputContainer onChange={(e) => handleChange(e)}>
           <Input placeholder="Enter Users" />

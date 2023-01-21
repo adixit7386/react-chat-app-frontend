@@ -121,7 +121,7 @@ const Login = () => {
       ManageNotification("Please Provide all the details");
       return;
     }
-    console.log("res.status");
+
     try {
       dispatch(loginStart());
       const res = await axios.post(
@@ -133,7 +133,7 @@ const Login = () => {
         ManageNotification("UserName or password is incorrect");
         dispatch(loginFailure());
       }
-      console.log(res.data);
+
       navigate("/");
       dispatch(loginSuccess(res.data));
     } catch (err) {

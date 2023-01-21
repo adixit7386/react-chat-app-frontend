@@ -83,6 +83,7 @@ const PersonContainer = ({ toggle }) => {
       dispatch(togglePersonBar());
     }
   };
+  console.log(activeChat);
   return (
     <ParentContainer
       className="parent"
