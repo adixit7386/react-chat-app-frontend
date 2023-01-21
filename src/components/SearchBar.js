@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import User from "../redux/exportUser";
 import Toast from "../components/Toast";
 import axios from "axios";
+import { addUserChats } from "../redux/userChatsReducer";
 const ParentContainer = Styled.div`
 position:absolute;
 visibility:${(props) => (props.toggle === true ? "visible" : "hidden")};
@@ -177,6 +178,7 @@ object-fit:cover;
 width:50px;`;
 const SearchBar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   let toggle = useSelector((state) => state.sidebar.toggle);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
@@ -199,13 +201,14 @@ const SearchBar = () => {
           },
         }
       );
+      dispatch(addUserChats(data));
       navigate("/");
       dispatch(toggleSidebar());
     } catch (err) {
       ManageNotification("couldn't create a chat");
     }
   };
-  const dispatch = useDispatch();
+
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       dispatch(toggleSidebar());

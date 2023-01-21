@@ -8,6 +8,7 @@ import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
+import { setUserChats, addUserChats } from "../redux/userChatsReducer";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -132,7 +133,7 @@ background-color:#f8f9fa;
 const SidebarContainer = () => {
   const dispatch = useDispatch();
   const activeChat = useSelector((item) => item.activechat.active);
-  const [chats, setChats] = useState([]);
+  const chats = useSelector((state) => state.userchats.chats);
   useEffect(() => {
     const fetchChat = async (userId) => {
       try {
@@ -145,8 +146,7 @@ const SidebarContainer = () => {
             },
           }
         );
-        setChats(data);
-        console.log(data);
+        dispatch(setUserChats(data));
       } catch (err) {
         console.log(err);
       }

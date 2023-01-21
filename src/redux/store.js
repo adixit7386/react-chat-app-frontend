@@ -17,6 +17,7 @@ import accountReducer from "./accountReducer";
 import nightModeReducer from "./nightModeReducer";
 import activeChatReducer from "./activeChatReducer";
 import createGroupReducer from "./createGroupReducer";
+import userChatsReducer from "./userChatsReducer";
 const persistConfig = {
   key: "root",
   version: 1,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   nightmodebar: nightModeReducer,
   activechat: activeChatReducer,
   creategroup: createGroupReducer,
+  userchats: userChatsReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

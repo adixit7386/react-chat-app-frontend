@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
@@ -46,14 +45,14 @@ align-items:center;
 justify-content:center;
 margin:10px auto;`;
 
-const ImageContainer = Styled.div`
-display:flex;
-align-items:center;
-height:35%;
-display:flex;
-align-items:center;
-justify-content:center;
-justify-content:center;`;
+// const ImageContainer = Styled.div`
+// display:flex;
+// align-items:center;
+// height:35%;
+// display:flex;
+// align-items:center;
+// justify-content:center;
+// justify-content:center;`;
 
 const AddedUsers = Styled.div`
 flex:1;
