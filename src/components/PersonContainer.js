@@ -7,7 +7,7 @@ position:absolute;
 top:0px;
 left:0px;
 z-index:5;
-
+background-color:rgba(0,0,0,0.2);
 height:100vh;
 width:100vw;
 visibility:${(props) => (props.toggle ? "visible" : "hidden")};

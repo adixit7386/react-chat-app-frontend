@@ -13,6 +13,7 @@ position:absolute;
 visibility:${(props) => (props.toggle === true ? "visible" : "hidden")};
 width:100vw;
 height:100vh;
+background-color:rgba(0,0,0,0.2);
 z-index:5;
 transition:all 1s ease;
 `;
@@ -30,7 +31,7 @@ overflow:scroll;
   display:none;
 }
 top:0px;
-transition:all 0.5s ease;
+transition:all 0.5s ease-out;
 box-shadow:0px 10px 20px grey;
 margin-left:${(props) => (props.toggle === true ? "0px" : "-400px")};
 

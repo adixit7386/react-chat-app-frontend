@@ -8,13 +8,15 @@ position:absolute;
 top:0px;
 left:0px;
 z-index:5;
-
+background-color:${(props) =>
+  props.toggle ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.09)"};
 height:100vh;
 width:100vw;
 visibility:${(props) => (props.toggle ? "visible" : "hidden")};
 display:flex;
 align-items:center;
 justify-content:center;
+transition:background-color 0.5s ease;
 
 `;
 

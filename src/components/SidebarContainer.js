@@ -4,6 +4,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import User from "../redux/exportUser";
+import { getSender } from "../config/chatLogics";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -127,7 +128,6 @@ const SidebarContainer = () => {
   const [chats, setChats] = useState([]);
   useEffect(() => {
     const fetchChat = async (userId) => {
-      console.log("hello world ");
       try {
         const { data } = await axios.get(
           "http://localhost:5000/api/chat/",
@@ -139,13 +139,13 @@ const SidebarContainer = () => {
           }
         );
         setChats(data);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchChat();
   }, []);
-  console.log(chats);
   const IconStyle = {
     height: "35px",
     width: "35px",
@@ -181,7 +181,7 @@ const SidebarContainer = () => {
         </ChatContainerHead>
         {chats?.map((item) => (
           <ChatContainer>
-            <ChatName>{item.ChatName}</ChatName>
+            <ChatName>{getSender(User, item.users)}</ChatName>
             <LastMessage>
               {item.latestMessage.content
                 ? item.latestMessage
