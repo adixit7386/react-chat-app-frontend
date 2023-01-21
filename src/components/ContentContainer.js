@@ -192,7 +192,7 @@ const ContentContainer = () => {
     <Container>
       <Wrapper>
         {activeChat.isGroupChat === true ? (
-          <UpdateGroup />
+          <UpdateGroup toggle={toggleBar} />
         ) : (
           <PersonContainer toggle={toggleBar}></PersonContainer>
         )}

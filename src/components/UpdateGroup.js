@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleAccountBar } from "../redux/accountReducer";
+import { togglePersonBar } from "../redux/personReducer";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
@@ -22,9 +22,9 @@ display:flex;
 align-items:center;
 justify-content:center;
 transition:background-color 0.5s ease;
+visibility:${(props) => (props.toggle ? "visible" : "hidden")};
 
 `;
-// visibility:${(props) => (props.toggle ? "visible" : "hidden")};
 
 const Container = Styled.div`
 background-color:white;
@@ -245,6 +245,9 @@ const CreateGroup = ({ toggle }) => {
     }
   };
   const handleClick = async ({ userId, name }) => {
+    if (activeChat.groupAdmin._id === User._id) {
+      return;
+    }
     let users = {};
     users.userId = userId;
     users.ChatId = activeChat._id;
@@ -271,6 +274,12 @@ const CreateGroup = ({ toggle }) => {
     if (activeChat.users.length <= 2) {
       return;
     }
+    if (userId === User._id) {
+      return;
+    }
+    if (activeChat.groupAdmin._id === User._id) {
+      return;
+    }
     let users = {};
     users.userId = userId;
     users.ChatId = activeChat._id;
@@ -294,30 +303,20 @@ const CreateGroup = ({ toggle }) => {
     }
   };
 
-  const handleCreateGroup = async () => {
-    group.isGroupChat = true;
-    group.users = JSON.stringify(usersArray);
-    group.ChatName = ChatName;
-
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/chat/group",
-        group,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${User.accessToken}`,
-          },
-        }
-      );
-      navigate("/");
-    } catch (err) {
-      ManageNotification("couldn't create a chat");
+  const toggleUpdateGroup = (e) => {
+    if (e.target.classList.contains("parent")) {
+      dispatch(togglePersonBar());
     }
   };
 
   return (
-    <ParentContainer className="parent" onClick={(e) => {}} toggle={toggle}>
+    <ParentContainer
+      className="parent"
+      onClick={(e) => {
+        toggleUpdateGroup(e);
+      }}
+      toggle={toggle}
+    >
       {isnotification && <Toast message={notification} />}
       <Container>
         <HeadingContainer>
@@ -377,9 +376,6 @@ const CreateGroup = ({ toggle }) => {
             ))}
           </SearchUserContainer>
         )}
-        <ButtonContainer>
-          <Button onClick={handleCreateGroup}>Create</Button>
-        </ButtonContainer>
       </Container>
     </ParentContainer>
   );
