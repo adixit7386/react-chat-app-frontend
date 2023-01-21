@@ -4,7 +4,8 @@ import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
-
+import { getSender } from "../config/chatLogics";
+import User from "../redux/exportUser";
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
@@ -181,10 +182,11 @@ width:45px;`;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
-
+  const activeChat = useSelector((item) => item.activechat.active);
   const handleClick = () => {
     dispatch(togglePersonBar());
   };
+  console.log("hello", activeChat);
   return (
     <Container>
       <Wrapper>
@@ -194,7 +196,11 @@ const ContentContainer = () => {
             <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
           </UserIconContainer>
           <UserDetails onClick={handleClick}>
-            <Heading>Nitin Kumar</Heading>
+            <Heading>
+              {activeChat.isGroupChat
+                ? activeChat.ChatName
+                : getSender(User, activeChat.users)}
+            </Heading>
           </UserDetails>
         </HeadContainer>
         <ContentWrapper>

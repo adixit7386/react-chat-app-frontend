@@ -31,6 +31,7 @@ justify-content:center;
 width:85%;
 flex-direction:column;`;
 const ChatContainer = Styled.div`
+cursor:pointer;
 margin-top:20px;
 width:100%;
 padding:7px 12px;
@@ -192,7 +193,9 @@ const SidebarContainer = () => {
             onClick={() => handleActiveChat(item)}
             selected={item === activeChat ? true : false}
           >
-            <ChatName>{getSender(User, item.users)}</ChatName>
+            <ChatName>
+              {item.isGroupChat ? item.ChatName : getSender(User, item.users)}
+            </ChatName>
             <LastMessage>
               {item.latestMessage.content
                 ? item.latestMessage
