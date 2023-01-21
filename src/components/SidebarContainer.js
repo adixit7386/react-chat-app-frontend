@@ -5,6 +5,8 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import User from "../redux/exportUser";
 import { getSender } from "../config/chatLogics";
+import { setActiveChat } from "../redux/activeChatReducer";
+import { useSelector, useDispatch } from "react-redux";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -33,8 +35,9 @@ margin-top:20px;
 width:100%;
 padding:7px 12px;
 border-radius:5px;
-background-color:white;
+background-color:${(props) => (props.selected ? "lightgrey" : "white")};
 box-shadow:0px 0px 5px gray;
+
 `;
 const ChatContainerHead = Styled.div`
 margin-top:20px;
@@ -125,6 +128,8 @@ cursor:pointer;
 background-color:#f8f9fa;
 `;
 const SidebarContainer = () => {
+  const dispatch = useDispatch();
+  const activeChat = useSelector((item) => item.activechat.active);
   const [chats, setChats] = useState([]);
   useEffect(() => {
     const fetchChat = async (userId) => {
@@ -149,6 +154,9 @@ const SidebarContainer = () => {
   const IconStyle = {
     height: "35px",
     width: "35px",
+  };
+  const handleActiveChat = (item) => {
+    dispatch(setActiveChat(item));
   };
   return (
     <Container>
@@ -180,7 +188,10 @@ const SidebarContainer = () => {
           </Right>
         </ChatContainerHead>
         {chats?.map((item) => (
-          <ChatContainer>
+          <ChatContainer
+            onClick={() => handleActiveChat(item)}
+            selected={item === activeChat ? true : false}
+          >
             <ChatName>{getSender(User, item.users)}</ChatName>
             <LastMessage>
               {item.latestMessage.content
