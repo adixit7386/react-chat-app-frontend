@@ -1,6 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
 const ParentContainer = Styled.div`
@@ -79,6 +79,7 @@ height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const activeChat = useSelector((state) => state.activechat.active);
 
   let user;
 
