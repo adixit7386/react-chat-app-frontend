@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
 import User from "../redux/exportUser";
-import { toggleCreateGroup } from "../redux/createGroupReducer";
 
 import CloseIcon from "@mui/icons-material/Close";
 const ParentContainer = Styled.div`
@@ -168,7 +167,6 @@ justify-content:center;
 `;
 
 const CreateGroup = ({ toggle }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
@@ -239,25 +237,13 @@ const CreateGroup = ({ toggle }) => {
         }
       );
       navigate("/");
-      dispatch(toggleCreateGroup());
     } catch (err) {
       ManageNotification("couldn't create a chat");
     }
   };
-  const handleToggle = (e) => {
-    if (e.target.classList.contains("parent")) {
-      dispatch(toggleCreateGroup());
-    }
-  };
 
   return (
-    <ParentContainer
-      className="parent"
-      onClick={(e) => {
-        handleToggle(e);
-      }}
-      toggle={toggle}
-    >
+    <ParentContainer className="parent" onClick={(e) => {}} toggle={toggle}>
       {isnotification && <Toast message={notification} />}
       <Container>
         <HeadingContainer>

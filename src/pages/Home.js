@@ -5,6 +5,7 @@ import ContentContainer from "../components/ContentContainer";
 import SidebarContainer from "../components/SidebarContainer";
 import SearchBar from "../components/SearchBar";
 import CreateGroup from "../components/CreateGroup";
+import { useSelector } from "react-redux";
 const Container = Styled.div`
 `;
 const Wrapper = Styled.div`
@@ -14,9 +15,10 @@ justify-content:center;
 `;
 
 const Home = () => {
+  const createGroup = useSelector((state) => state.creategroup.group);
   return (
     <Container>
-      {/* <CreateGroup /> */}
+      {createGroup && <CreateGroup />}
       <SearchBar />
 
       <Navbar />

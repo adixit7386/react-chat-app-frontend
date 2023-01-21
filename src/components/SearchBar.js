@@ -173,6 +173,7 @@ color:grey;`;
 const Img = Styled.img`
 height:50px ;
 border-radius:50%;
+object-fit:cover;
 width:50px;`;
 const SearchBar = () => {
   const navigate = useNavigate();

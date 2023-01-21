@@ -7,6 +7,7 @@ import User from "../redux/exportUser";
 import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
+import { toggleCreateGroup } from "../redux/createGroupReducer";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -184,7 +185,10 @@ const SidebarContainer = () => {
           </Center>
           <Right>
             <IconContainer>
-              <AddIcon style={IconStyle} />
+              <AddIcon
+                onClick={() => dispatch(toggleCreateGroup())}
+                style={IconStyle}
+              />
             </IconContainer>
           </Right>
         </ChatContainerHead>
