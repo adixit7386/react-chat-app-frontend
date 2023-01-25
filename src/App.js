@@ -16,7 +16,6 @@ const App = () => {
       path: "/",
       element: User != null ? <Home /> : <Navigate to="/login" />,
     },
-
     {
       path: "/login",
       element: <Login />,

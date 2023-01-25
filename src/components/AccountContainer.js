@@ -3,10 +3,9 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
-import { persistStore } from "redux-persist";
-import { store } from "../redux/store";
+
 import { logout } from "../redux/userReducer";
-let persistor = persistStore(store);
+
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;

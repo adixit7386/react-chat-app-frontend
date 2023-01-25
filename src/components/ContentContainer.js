@@ -215,8 +215,8 @@ const ContentContainer = () => {
         }
       );
       setFetchmessage(data);
-      var elem = document.getElementById("data");
-      elem.scrollTop = elem.scrollHeight;
+      // var elem = document.getElementById("data");
+      // elem.scrollTop = elem.scrollHeight;
     } catch (error) {
       console.log(error);
     }
@@ -244,11 +244,11 @@ const ContentContainer = () => {
       );
       fetchMessage();
       setMessage("");
-      setTimeout(() => {
-        var elem = document.getElementById("data");
+      // setTimeout(() => {
+      //   var elem = document.getElementById("data");
 
-        elem.scrollTop = elem.scrollHeight;
-      }, 300);
+      //   elem.scrollTop = elem.scrollHeight;
+      // }, 300);
     } catch (error) {
       console.log(error);
     }
