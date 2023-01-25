@@ -21,9 +21,11 @@ const Home = () => {
   return (
     <Container>
       {createGroup && <CreateGroup />}
+
       <SearchBar />
 
       <Navbar />
+
       <Wrapper>
         <SidebarContainer />
         <ContentContainer />

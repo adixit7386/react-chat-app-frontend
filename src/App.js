@@ -2,15 +2,11 @@ import React from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { useSelector } from "react-redux";
 
 import User from "./redux/exportUser";
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Link,
-  useNavigate,
   Navigate,
 } from "react-router-dom";
 

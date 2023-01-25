@@ -136,7 +136,7 @@ background-color:#f8f9fa;
 const SidebarContainer = () => {
   const dispatch = useDispatch();
   const activeChat = useSelector((item) => item.activechat.active);
-
+  const toggleUpdateChat = useSelector((state) => state.updatechats.toggle);
   const [chatList, setChatList] = useState([]);
   useEffect(() => {
     const fetchChat = async (userId) => {
@@ -157,7 +157,7 @@ const SidebarContainer = () => {
       }
     };
     fetchChat();
-  }, []);
+  }, [toggleUpdateChat]);
   const IconStyle = {
     height: "35px",
     width: "35px",
