@@ -59,22 +59,22 @@ border-bottom-right-radius:10px;
 border-bottom-left-radius:10px;`;
 const Center = Styled.div`
 
-width:80%;
+width:90%;
 display:flex;
 align-items:center;
 justify-content:center;`;
 
 const InputContainer = Styled.div`
 flex:9;
-height:35px;
+height:45px;
 display:flex;
 align-items:center;
 jusify-content:center;
-border:solid 2px gray;
-border-top-left-radius:50px;
-border-bottom-left-radius:50px;
+border:solid 1px gray;
+border-top-left-radius:10px;
+border-bottom-left-radius:10px;
 padding:2px 20px;
-
+background-color:white;
 `;
 const Input = Styled.input`
 background-color:#f8f9fa;
@@ -92,19 +92,21 @@ border:none;
 height: 35px;
 outline:none;
 }
+background-color:white;
 
 `;
 
 const SearchIconContainer = Styled.div`
-height:35px;
+background-color:white;
+height:45px;
 width:35px;
-border:solid 2px gray;
+border:solid 1px gray;
 border-left:none;
 display:flex;
 align-items:center;
 jusify-content:center;
-border-top-right-radius:50px;
-border-bottom-right-radius:50px;
+border-top-right-radius:10px;
+border-bottom-right-radius:10px;
 padding:2px 4px;
 `;
 const MessageContainerSender = Styled.div`
@@ -172,8 +174,8 @@ const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
 cursor:pointer;
-width:85px;
-height:45px;
+width:55px;
+height:55px;
 justify-content:center;
 `;
 const UserDetails = Styled.div`
@@ -186,7 +188,7 @@ font-weight:500;
 color:black;`;
 
 const Img = Styled.img`
-margin:0px 20px;
+
 height:45px ;
 border-radius:50%;
 object-fit:cover;
@@ -213,6 +215,8 @@ const ContentContainer = () => {
         }
       );
       setFetchmessage(data);
+      var elem = document.getElementById("data");
+      elem.scrollTop = elem.scrollHeight;
     } catch (error) {
       console.log(error);
     }
@@ -240,6 +244,11 @@ const ContentContainer = () => {
       );
       fetchMessage();
       setMessage("");
+      setTimeout(() => {
+        var elem = document.getElementById("data");
+
+        elem.scrollTop = elem.scrollHeight;
+      }, 300);
     } catch (error) {
       console.log(error);
     }
@@ -277,7 +286,7 @@ const ContentContainer = () => {
           </UserDetails>
         </HeadContainer>
         <ContentWrapper>
-          <ChatContainer>
+          <ChatContainer id="data">
             {fetchmessage.map((item, index) => {
               if (item.sender._id === User._id) {
                 return (
