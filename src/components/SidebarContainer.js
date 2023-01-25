@@ -56,6 +56,10 @@ margin:0px;
 font-size:20px;
 `;
 const LastMessage = Styled.span`
+color:grey;
+`;
+const LastMessageSender = Styled.span`
+font-weight:500;
 `;
 const Center = Styled.div`
 
@@ -161,7 +165,7 @@ const SidebarContainer = () => {
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
   };
-
+  console.log(chatlist[5].latestMessage[0].content);
   return (
     <Container>
       <Wrapper>
@@ -204,9 +208,15 @@ const SidebarContainer = () => {
                 ? item?.ChatName
                 : getSender(User, item?.users)}
             </ChatName>
+
+            <LastMessageSender>
+              {item?.latestMessage[0]?.sender
+                ? `${item.latestMessage[0].sender.name} : `
+                : ""}
+            </LastMessageSender>
             <LastMessage>
-              {item?.latestMessage?.content
-                ? item.latestMessage
+              {item?.latestMessage[0]?.content
+                ? item.latestMessage[0].content
                 : "send first message"}
             </LastMessage>
           </ChatContainer>
