@@ -115,6 +115,7 @@ align-items:center;
 margin-top:0px;
 justify-content:flex-start;
 
+
 `;
 const MessageContainer = Styled.div`
 width:100%;
@@ -123,7 +124,7 @@ display:flex;
 align-items:center;
 justify-content:flex-end;
 
-margin-top:0px;
+margin:10px 0px;
 `;
 const SenderMessage = Styled.div`
 width:content-fit;
@@ -133,7 +134,8 @@ background-color:white;
 border-radius:10px;
 box-shadow:0px 0px 10px lightgrey;
 padding:3px 5px;
-margin-top:20px;
+
+background-color:#E0FFFF;
 `;
 const UserMessage = Styled.div`
 width:content-fit;
@@ -143,7 +145,7 @@ box-shadow:0px 0px 10px lightgrey;
 border-radius:10px;
 background-color:white;
 padding:3px 5px;
-margin-top:20px;
+
 `;
 const MessageDetail = Styled.div`
 height:content-fit;
@@ -156,12 +158,16 @@ height:content-fit;
 `;
 const NameText = Styled.span`
 font-size:17px;
-color:black;`;
+color:green;`;
+const NameTextSender = Styled.span`
+font-size:17px;
+color:red;`;
 const TimeText = Styled.span`
 font-size:15px;
 color:grey;`;
 const MessageText = Styled.span`
 font-size:18px;`;
+
 const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
@@ -181,6 +187,7 @@ const Img = Styled.img`
 margin:0px 20px;
 height:45px ;
 border-radius:50%;
+object-fit:cover;
 width:45px;`;
 
 const ContentContainer = () => {
@@ -210,7 +217,7 @@ const ContentContainer = () => {
   };
   useEffect(() => {
     fetchMessage();
-  }, []);
+  }, [activeChat]);
 
   const sendMessage = async () => {
     if (message === "") {
@@ -270,14 +277,20 @@ const ContentContainer = () => {
                         <MessageText>{item.content}</MessageText>
                       </MessageContent>
                     </UserMessage>
+                    <UserIconContainer>
+                      <Img src={item.sender.image} />
+                    </UserIconContainer>
                   </MessageContainer>
                 );
               } else {
                 return (
                   <MessageContainerSender>
+                    <UserIconContainer>
+                      <Img src={item.sender.image} />
+                    </UserIconContainer>
                     <SenderMessage>
                       <MessageDetail>
-                        <NameText>{item.sender.name}</NameText>
+                        <NameTextSender>{item.sender.name}</NameTextSender>
                         <TimeText>2.14 pm</TimeText>
                       </MessageDetail>
                       <MessageContent>
@@ -309,6 +322,9 @@ const ContentContainer = () => {
                       height: "30px",
                       width: "30px",
                     },
+                  }}
+                  onkeypress={(event) => {
+                    console.log(event);
                   }}
                   onClick={() => {
                     sendMessage();
