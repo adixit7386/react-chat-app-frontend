@@ -5,7 +5,9 @@ import ContentContainer from "../components/ContentContainer";
 import SidebarContainer from "../components/SidebarContainer";
 import SearchBar from "../components/SearchBar";
 import CreateGroup from "../components/CreateGroup";
+
 import { useSelector } from "react-redux";
+
 const Container = Styled.div`
 `;
 const Wrapper = Styled.div`

@@ -181,8 +181,8 @@ const Navbar = () => {
             />
           </DarkModeIconContainer>
           <UserContainer clicked={true} onClick={handleClick}>
-            <UserNameContainer>{user.name}</UserNameContainer>
-            <Img src={user.image} />
+            <UserNameContainer>{user?.name}</UserNameContainer>
+            <Img src={user?.image} />
           </UserContainer>
         </Right>
       </Wrapper>

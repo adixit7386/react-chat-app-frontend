@@ -6,7 +6,6 @@ import Toast from "./Toast";
 import axios from "axios";
 import User from "../redux/exportUser";
 import { setActiveChat } from "../redux/activeChatReducer";
-import { addUserChats } from "../redux/userChatsReducer";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -240,7 +239,7 @@ const CreateGroup = ({ toggle }) => {
         }
       );
       dispatch(setActiveChat(data));
-      dispatch(addUserChats(data));
+
       dispatch(toggleCreateGroup());
       navigate("/");
     } catch (err) {

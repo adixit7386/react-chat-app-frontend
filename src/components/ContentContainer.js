@@ -112,7 +112,7 @@ width:100%;
 height:content-fit;
 display:flex;
 align-items:center;
-margin-top:0px;
+margin:10px 0px;
 justify-content:flex-start;
 
 
@@ -219,6 +219,7 @@ const ContentContainer = () => {
   };
   useEffect(() => {
     fetchMessage();
+    return;
   }, [activeChat]);
 
   const sendMessage = async () => {
@@ -238,6 +239,7 @@ const ContentContainer = () => {
         }
       );
       fetchMessage();
+      setMessage("");
     } catch (error) {
       console.log(error);
     }
@@ -320,8 +322,15 @@ const ContentContainer = () => {
           </ChatContainer>
           <SendContainer>
             <Center>
-              <InputContainer>
+              <InputContainer
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    sendMessage();
+                  }
+                }}
+              >
                 <Input
+                  value={message}
                   placeholder="Send Messages"
                   className="NavbarInput"
                   onChange={(e) => setMessage(e.target.value)}
@@ -338,9 +347,6 @@ const ContentContainer = () => {
                       height: "30px",
                       width: "30px",
                     },
-                  }}
-                  onkeypress={(event) => {
-                    console.log(event);
                   }}
                   onClick={() => {
                     sendMessage();

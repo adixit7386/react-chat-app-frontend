@@ -3,6 +3,10 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
+import { persistStore } from "redux-persist";
+import { store } from "../redux/store";
+import { logout } from "../redux/userReducer";
+let persistor = persistStore(store);
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -93,11 +97,14 @@ const PersonContainer = ({ toggle }) => {
 
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
-      localStorage.removeItem("root");
       dispatch(toggleAccountBar());
     }
   };
-
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(toggleAccountBar());
+    navigate("/login");
+  };
   return (
     <ParentContainer
       className="parent"
@@ -119,8 +126,7 @@ const PersonContainer = ({ toggle }) => {
         <CloseContainer>
           <Button
             onClick={() => {
-              dispatch(toggleAccountBar());
-              navigate("/login");
+              handleLogout();
             }}
           >
             Logout

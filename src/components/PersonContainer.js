@@ -2,7 +2,7 @@ import React from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
-import { User } from "../redux/exportUser";
+import User from "../redux/exportUser";
 import { getSender } from "../config/chatLogics";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -75,7 +75,7 @@ background-color:#0081B4;
 color:white;
 height:15%;`;
 const PersonContainer = ({ toggle }) => {
-  const activeChat = useSelector((state) => state.activechat.active);
+  const activeChat = useSelector((state) => state?.activechat?.active);
 
   const dispatch = useDispatch();
   const handleClick = (e) => {
@@ -95,16 +95,16 @@ const PersonContainer = ({ toggle }) => {
       <Container>
         <HeadingContainer>
           <Heading>
-            {activeChat.isGroupChat
-              ? activeChat.ChatName
-              : getSender(User, activeChat.users)}
+            {activeChat?.isGroupChat
+              ? activeChat?.ChatName
+              : getSender(User, activeChat?.users)}
           </Heading>
         </HeadingContainer>
         <ImageContainer>
           <Image src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
         </ImageContainer>
         <EmailContainer>
-          <HeadingEmail>{activeChat.email}</HeadingEmail>
+          <HeadingEmail>{activeChat?.email}</HeadingEmail>
         </EmailContainer>
         <CloseContainer>
           <Button

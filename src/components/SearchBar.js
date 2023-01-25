@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import User from "../redux/exportUser";
 import Toast from "../components/Toast";
 import axios from "axios";
-import { addUserChats } from "../redux/userChatsReducer";
+import { toggleUpdateChat } from "../redux/updateChats";
+
 const ParentContainer = Styled.div`
 position:absolute;
 visibility:${(props) => (props.toggle === true ? "visible" : "hidden")};
@@ -201,10 +202,10 @@ const SearchBar = () => {
           },
         }
       );
-      dispatch(addUserChats(data));
-      navigate("/");
       dispatch(toggleSidebar());
+      dispatch(toggleUpdateChat());
     } catch (err) {
+      console.log(err);
       ManageNotification("couldn't create a chat");
     }
   };

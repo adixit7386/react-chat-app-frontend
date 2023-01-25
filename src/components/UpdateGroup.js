@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
-import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
 import User from "../redux/exportUser";
 import { setActiveChat } from "../redux/activeChatReducer";
-import { updateUserChats } from "../redux/userChatsReducer";
+import { toggleUpdateChat } from "../redux/updateChats";
 import CloseIcon from "@mui/icons-material/Close";
+
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -45,15 +45,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 margin:10px auto;`;
-
-const ImageContainer = Styled.div`
-display:flex;
-align-items:center;
-height:35%;
-display:flex;
-align-items:center;
-justify-content:center;
-justify-content:center;`;
 
 const AddedUsers = Styled.div`
 flex:1;
@@ -187,7 +178,7 @@ font-size:20px;`;
 
 const CreateGroup = ({ toggle }) => {
   const activeChat = useSelector((state) => state.activechat.active);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
@@ -196,7 +187,7 @@ const CreateGroup = ({ toggle }) => {
   const [addedUsers, setAddedUsers] = useState([]);
   const [ChatName, setChatName] = useState("");
   let usersArray = [];
-  let group = {};
+
   addedUsers.map((item) => usersArray.push(item.userId));
   const ManageNotification = (message) => {
     let msg = message;
@@ -239,7 +230,7 @@ const CreateGroup = ({ toggle }) => {
         config
       );
       dispatch(setActiveChat(data));
-      dispatch(updateUserChats(data));
+      dispatch(toggleUpdateChat());
     } catch (err) {
       console.log(err);
     }
@@ -264,7 +255,7 @@ const CreateGroup = ({ toggle }) => {
         }
       );
       dispatch(setActiveChat(data));
-      dispatch(updateUserChats(data));
+      dispatch(toggleUpdateChat());
     } catch (err) {
       ManageNotification("this user already exist");
     }
@@ -295,7 +286,7 @@ const CreateGroup = ({ toggle }) => {
         }
       );
       dispatch(setActiveChat(data));
-      dispatch(updateUserChats(data));
+      dispatch(toggleUpdateChat());
     } catch (err) {
       ManageNotification("this user already exist");
     }
