@@ -265,7 +265,6 @@ const CreateGroup = ({ toggle }) => {
       );
       dispatch(setActiveChat(data));
       dispatch(updateUserChats(data));
-      console.log(data);
     } catch (err) {
       ManageNotification("this user already exist");
     }
@@ -297,7 +296,6 @@ const CreateGroup = ({ toggle }) => {
       );
       dispatch(setActiveChat(data));
       dispatch(updateUserChats(data));
-      console.log(data);
     } catch (err) {
       ManageNotification("this user already exist");
     }

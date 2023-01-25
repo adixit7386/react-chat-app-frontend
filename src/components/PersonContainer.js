@@ -76,14 +76,14 @@ color:white;
 height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const activeChat = useSelector((state) => state.activechat.active);
-  console.log(activeChat);
+
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       dispatch(togglePersonBar());
     }
   };
-  console.log(activeChat);
+
   return (
     <ParentContainer
       className="parent"

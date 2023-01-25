@@ -133,7 +133,7 @@ background-color:#f8f9fa;
 const SidebarContainer = () => {
   const dispatch = useDispatch();
   const activeChat = useSelector((item) => item.activechat.active);
-  const chats = useSelector((state) => state.userchats.chats);
+  const chatlist = useSelector((state) => state.userchats.chats);
   useEffect(() => {
     const fetchChat = async (userId) => {
       try {
@@ -146,6 +146,7 @@ const SidebarContainer = () => {
             },
           }
         );
+
         dispatch(setUserChats(data));
       } catch (err) {
         console.log(err);
@@ -160,7 +161,7 @@ const SidebarContainer = () => {
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
   };
-  console.log(chats);
+
   return (
     <Container>
       <Wrapper>
@@ -193,16 +194,18 @@ const SidebarContainer = () => {
             </IconContainer>
           </Right>
         </ChatContainerHead>
-        {chats?.map((item) => (
+        {chatlist?.map((item) => (
           <ChatContainer
             onClick={() => handleActiveChat(item)}
             selected={item === activeChat ? true : false}
           >
             <ChatName>
-              {item.isGroupChat ? item.ChatName : getSender(User, item.users)}
+              {item?.isGroupChat
+                ? item?.ChatName
+                : getSender(User, item?.users)}
             </ChatName>
             <LastMessage>
-              {item.latestMessage.content
+              {item?.latestMessage?.content
                 ? item.latestMessage
                 : "send first message"}
             </LastMessage>

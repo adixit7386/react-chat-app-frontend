@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
 import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 import { getSender } from "../config/chatLogics";
 import UpdateGroup from "./UpdateGroup";
+import axios from "axios";
 import User from "../redux/exportUser";
 const Container = Styled.div`
 flex:5;
@@ -125,7 +126,8 @@ justify-content:flex-end;
 margin-top:0px;
 `;
 const SenderMessage = Styled.div`
-width:80%;
+width:content-fit;
+max-width:80%;
 margin-left:20px;
 background-color:white;
 border-radius:10px;
@@ -134,7 +136,8 @@ padding:3px 5px;
 margin-top:20px;
 `;
 const UserMessage = Styled.div`
-width:80%;
+width:content-fit;
+max-width:80%;
 margin-right:20px;
 box-shadow:0px 0px 10px lightgrey;
 border-radius:10px;
@@ -187,7 +190,50 @@ const ContentContainer = () => {
   const handleClick = () => {
     dispatch(togglePersonBar());
   };
-  console.log(activeChat);
+
+  const [message, setMessage] = useState("");
+  const [fetchmessage, setFetchmessage] = useState([]);
+  const fetchMessage = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:5000/api/message/${activeChat._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${User.accessToken}`,
+          },
+        }
+      );
+      setFetchmessage(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchMessage();
+  }, []);
+
+  const sendMessage = async () => {
+    if (message === "") {
+      return;
+    }
+    let content = { chatId: activeChat._id, message: message };
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/message/",
+        content,
+        {
+          headers: {
+            Authorization: `Bearer ${User.accessToken}`,
+          },
+        }
+      );
+      fetchMessage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -211,671 +257,46 @@ const ContentContainer = () => {
         </HeadContainer>
         <ContentWrapper>
           <ChatContainer>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
-            <MessageContainer>
-              <UserMessage>
-                <MessageDetail>
-                  <NameText>You</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </UserMessage>
-            </MessageContainer>
-            <MessageContainerSender>
-              <SenderMessage>
-                <MessageDetail>
-                  <NameText>Animesh</NameText>
-                  <TimeText>2.14 pm</TimeText>
-                </MessageDetail>
-                <MessageContent>
-                  <MessageText>
-                    second this is the sldkfjslkd flksdf jdklsf jlksdjf lskfj
-                    slkdf jsldkf jsldkfsldfkjs ldfkj slkdfsldkfj sldkfj sdlkfj
-                    sdlkfjskldfj slkdf jlskdf slkdf jklsdfj lsdkf jsdlkf{" "}
-                  </MessageText>
-                </MessageContent>
-              </SenderMessage>
-            </MessageContainerSender>
+            {fetchmessage.map((item) => {
+              if (item.sender._id === User._id) {
+                return (
+                  <MessageContainer>
+                    <UserMessage>
+                      <MessageDetail>
+                        <NameText>You</NameText>
+                        <TimeText>{item.createdAt.getTime}</TimeText>
+                      </MessageDetail>
+                      <MessageContent>
+                        <MessageText>{item.content}</MessageText>
+                      </MessageContent>
+                    </UserMessage>
+                  </MessageContainer>
+                );
+              } else {
+                return (
+                  <MessageContainerSender>
+                    <SenderMessage>
+                      <MessageDetail>
+                        <NameText>{item.sender.name}</NameText>
+                        <TimeText>2.14 pm</TimeText>
+                      </MessageDetail>
+                      <MessageContent>
+                        <MessageText>{item.content}</MessageText>
+                      </MessageContent>
+                    </SenderMessage>
+                  </MessageContainerSender>
+                );
+              }
+            })}
           </ChatContainer>
           <SendContainer>
             <Center>
               <InputContainer>
-                <Input placeholder="Send Messages" className="NavbarInput" />
+                <Input
+                  placeholder="Send Messages"
+                  className="NavbarInput"
+                  onChange={(e) => setMessage(e.target.value)}
+                />
               </InputContainer>
               <SearchIconContainer>
                 <SendIcon
@@ -888,6 +309,9 @@ const ContentContainer = () => {
                       height: "30px",
                       width: "30px",
                     },
+                  }}
+                  onClick={() => {
+                    sendMessage();
                   }}
                 />
               </SearchIconContainer>
