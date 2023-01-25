@@ -172,6 +172,8 @@ const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
 cursor:pointer;
+width:85px;
+height:45px;
 justify-content:center;
 `;
 const UserDetails = Styled.div`
@@ -240,6 +242,16 @@ const ContentContainer = () => {
       console.log(error);
     }
   };
+  const isSameUser = (fetchmessage, index) => {
+    if (index === fetchmessage.length - 1) {
+      return true;
+    }
+    if (fetchmessage[index].sender._id === fetchmessage[index + 1].sender._id) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <Container>
@@ -264,7 +276,7 @@ const ContentContainer = () => {
         </HeadContainer>
         <ContentWrapper>
           <ChatContainer>
-            {fetchmessage.map((item) => {
+            {fetchmessage.map((item, index) => {
               if (item.sender._id === User._id) {
                 return (
                   <MessageContainer>
@@ -278,7 +290,9 @@ const ContentContainer = () => {
                       </MessageContent>
                     </UserMessage>
                     <UserIconContainer>
-                      <Img src={item.sender.image} />
+                      {isSameUser(fetchmessage, index) && (
+                        <Img src={item.sender.image} />
+                      )}
                     </UserIconContainer>
                   </MessageContainer>
                 );
@@ -286,7 +300,9 @@ const ContentContainer = () => {
                 return (
                   <MessageContainerSender>
                     <UserIconContainer>
-                      <Img src={item.sender.image} />
+                      {isSameUser(fetchmessage, index) && (
+                        <Img src={item.sender.image} />
+                      )}
                     </UserIconContainer>
                     <SenderMessage>
                       <MessageDetail>

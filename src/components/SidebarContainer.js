@@ -165,7 +165,7 @@ const SidebarContainer = () => {
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
   };
-  console.log(chatlist[5].latestMessage[0].content);
+
   return (
     <Container>
       <Wrapper>
@@ -211,12 +211,12 @@ const SidebarContainer = () => {
 
             <LastMessageSender>
               {item?.latestMessage[0]?.sender
-                ? `${item.latestMessage[0].sender.name} : `
+                ? `${item?.latestMessage[0]?.sender.name} : `
                 : ""}
             </LastMessageSender>
             <LastMessage>
               {item?.latestMessage[0]?.content
-                ? item.latestMessage[0].content
+                ? item?.latestMessage[0]?.content
                 : "send first message"}
             </LastMessage>
           </ChatContainer>
