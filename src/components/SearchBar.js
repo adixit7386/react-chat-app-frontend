@@ -299,22 +299,23 @@ const SearchBar = () => {
               </SearchIconContainer>
             </Center>
           </ItemTop>
-          {data?.map((item) => (
-            <Item
-              onClick={() => {
-                createChat(item._id);
-              }}
-            >
-              <UserIconContainer>
-                <Img src={item.image} />
-              </UserIconContainer>
-              <UserDetails>
-                <Heading>{item.name}</Heading>
-                <Br />
-                <Username>{item.username.slice(0, 18)}</Username>
-              </UserDetails>
-            </Item>
-          ))}
+          {data.length > 0 &&
+            data?.map((item) => (
+              <Item
+                onClick={() => {
+                  createChat(item._id);
+                }}
+              >
+                <UserIconContainer>
+                  <Img src={item.image} />
+                </UserIconContainer>
+                <UserDetails>
+                  <Heading>{item.name}</Heading>
+                  <Br />
+                  <Username>{item.username.slice(0, 18)}</Username>
+                </UserDetails>
+              </Item>
+            ))}
         </Wrapper>
       </Container>
     </ParentContainer>

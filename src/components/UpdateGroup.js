@@ -316,12 +316,12 @@ const CreateGroup = ({ toggle }) => {
             activeChat.users?.map((item) => (
               <UserButton>
                 <NameContainer>
-                  <Span>{item.name}</Span>
+                  <Span>{item?.name}</Span>
                 </NameContainer>
                 <CloseContainer>
                   <CloseIcon
                     onClick={() =>
-                      deleteUser({ userId: item._id, name: item.name })
+                      deleteUser({ userId: item?._id, name: item?.name })
                     }
                   />
                 </CloseContainer>
@@ -350,16 +350,16 @@ const CreateGroup = ({ toggle }) => {
             {data?.map((item) => (
               <Item
                 onClick={() => {
-                  handleClick({ userId: item._id, name: item.name });
+                  handleClick({ userId: item?._id, name: item?.name });
                 }}
               >
                 <UserIconContainer>
-                  <Img src={item.image} />
+                  <Img src={item?.image} />
                 </UserIconContainer>
                 <UserDetails>
-                  <SecondHeading>{item.name}</SecondHeading>
+                  <SecondHeading>{item?.name}</SecondHeading>
                   <Br />
-                  <Username>{item.username.slice(0, 18)}</Username>
+                  <Username>{item?.username.slice(0, 18)}</Username>
                 </UserDetails>
               </Item>
             ))}

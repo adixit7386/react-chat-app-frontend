@@ -1,6 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
-
+import User from "../redux/exportUser";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import MailIcon from "@mui/icons-material/Mail";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -133,15 +133,7 @@ const Navbar = () => {
   const handleClick = async () => {
     dispatch(toggleAccountBar());
   };
-  let user;
 
-  if (localStorage.getItem("persist:root") !== undefined) {
-    if (JSON.parse(localStorage?.getItem("persist:root"))?.user !== undefined) {
-      user = JSON.parse(
-        JSON.parse(localStorage?.getItem("persist:root"))?.user
-      )?.currentUser;
-    }
-  }
   return (
     <Container>
       <AccountContainer toggle={toggleBar}></AccountContainer>
@@ -181,8 +173,8 @@ const Navbar = () => {
             />
           </DarkModeIconContainer>
           <UserContainer clicked={true} onClick={handleClick}>
-            <UserNameContainer>{user?.name}</UserNameContainer>
-            <Img src={user?.image} />
+            <UserNameContainer>{User?.name}</UserNameContainer>
+            <Img src={User?.image} />
           </UserContainer>
         </Right>
       </Wrapper>

@@ -11,10 +11,24 @@ import {
 } from "react-router-dom";
 
 const App = () => {
+  // const router = createBrowserRouter([
+  //   {
+  //     path: "/",
+  //     element: <Home />,
+  //   },
+  //   {
+  //     path: "/login",
+  //     element: <Login />,
+  //   },
+  //   {
+  //     path: "/register",
+  //     element: <Register />,
+  //   },
+  // ]);
   const router = createBrowserRouter([
     {
       path: "/",
-      element: User != null ? <Home /> : <Navigate to="/login" />,
+      element: User != null ? <Home /> : <Navigate replace to="/login" />,
     },
     {
       path: "/login",

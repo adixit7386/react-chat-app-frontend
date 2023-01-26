@@ -215,8 +215,11 @@ const ContentContainer = () => {
         }
       );
       setFetchmessage(data);
-      // var elem = document.getElementById("data");
-      // elem.scrollTop = elem.scrollHeight;
+      setTimeout(() => {
+        var elem = document.getElementById("data");
+
+        elem.scrollTop = elem.scrollHeight;
+      }, 100);
     } catch (error) {
       console.log(error);
     }
@@ -244,11 +247,11 @@ const ContentContainer = () => {
       );
       fetchMessage();
       setMessage("");
-      // setTimeout(() => {
-      //   var elem = document.getElementById("data");
+      setTimeout(() => {
+        var elem = document.getElementById("data");
 
-      //   elem.scrollTop = elem.scrollHeight;
-      // }, 300);
+        elem.scrollTop = elem.scrollHeight;
+      }, 300);
     } catch (error) {
       console.log(error);
     }
@@ -274,9 +277,9 @@ const ContentContainer = () => {
         )}
 
         <HeadContainer>
-          <UserIconContainer onClick={handleClick}>
+          {/* <UserIconContainer onClick={handleClick}>
             <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
-          </UserIconContainer>
+          </UserIconContainer> */}
           <UserDetails onClick={handleClick}>
             <Heading>
               {activeChat.isGroupChat

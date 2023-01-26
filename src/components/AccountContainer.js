@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
-
+import user from "../redux/exportUser";
 import { logout } from "../redux/userReducer";
 
 const ParentContainer = Styled.div`
@@ -84,16 +84,6 @@ const PersonContainer = ({ toggle }) => {
   const dispatch = useDispatch();
   const activeChat = useSelector((state) => state.activechat.active);
 
-  let user;
-
-  if (localStorage.getItem("persist:root") !== undefined) {
-    if (JSON.parse(localStorage?.getItem("persist:root"))?.user !== undefined) {
-      user = JSON.parse(
-        JSON.parse(localStorage?.getItem("persist:root"))?.user
-      )?.currentUser;
-    }
-  }
-
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       dispatch(toggleAccountBar());
@@ -114,13 +104,13 @@ const PersonContainer = ({ toggle }) => {
     >
       <Container>
         <HeadingContainer>
-          <Heading>{user.name}</Heading>
+          <Heading>{user?.name}</Heading>
         </HeadingContainer>
         <ImageContainer>
-          <Image src={user.image} />
+          <Image src={user?.image} />
         </ImageContainer>
         <EmailContainer>
-          <HeadingEmail>{user.email}</HeadingEmail>
+          <HeadingEmail>{user?.email}</HeadingEmail>
         </EmailContainer>
         <CloseContainer>
           <Button

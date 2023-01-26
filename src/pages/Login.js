@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Styled from "styled-components";
 import Toast from "../components/Toast";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
 import ForumIcon from "@mui/icons-material/Forum";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
@@ -100,7 +100,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-
+  const User = useSelector((state) => state.user.currentUser);
   const user = {
     username: userName,
     password: password,
@@ -129,13 +129,11 @@ const Login = () => {
         user
       );
 
-      if (res.status !== 201) {
-        ManageNotification("UserName or password is incorrect");
-        dispatch(loginFailure());
-      }
-
-      navigate("/");
       dispatch(loginSuccess(res.data));
+      navigate("/");
+      // setTimeout(() => {
+      // }, User);
+      console.log("hello world");
     } catch (err) {
       ManageNotification("username or password is incorrect");
       console.log(err);
