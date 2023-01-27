@@ -11,6 +11,7 @@ import {
 
 const App = () => {
   const User = useSelector((state) => state.user.currentUser);
+  console.log(User);
   // const router = createBrowserRouter([
   //   {
   //     path: "/",
@@ -29,15 +30,15 @@ const App = () => {
     {
       path: "/",
 
-      element: User != null ? <Home /> : <Navigate replace to="/login" />,
+      element: User !== null ? <Home /> : <Navigate replace to="/login" />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: User !== null ? <Navigate replace to="/" /> : <Login />,
     },
     {
       path: "/register",
-      element: <Register />,
+      element: User !== null ? <Navigate replace to="/" /> : <Register />,
     },
   ]);
 
