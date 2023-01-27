@@ -2,7 +2,7 @@ import React from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
-import User from "../redux/exportUser";
+
 import { getSender } from "../config/chatLogics";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -76,7 +76,7 @@ color:white;
 height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const activeChat = useSelector((state) => state?.activechat?.active);
-
+  const User = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {

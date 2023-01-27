@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import User from "../redux/exportUser";
+
 import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
@@ -135,6 +135,7 @@ background-color:#f8f9fa;
 `;
 const SidebarContainer = () => {
   const dispatch = useDispatch();
+  const User = useSelector((state) => state.user.currentUser);
   const activeChat = useSelector((item) => item.activechat.active);
   const toggleUpdateChat = useSelector((state) => state.updatechats.toggle);
   const [chatList, setChatList] = useState([]);

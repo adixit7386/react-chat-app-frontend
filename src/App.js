@@ -2,8 +2,7 @@ import React from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-import User from "./redux/exportUser";
+import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -11,6 +10,7 @@ import {
 } from "react-router-dom";
 
 const App = () => {
+  const User = useSelector((state) => state.user.currentUser);
   // const router = createBrowserRouter([
   //   {
   //     path: "/",
@@ -28,8 +28,8 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
-      // element: User != null ? <Home /> : <Navigate replace to="/login" />,
+
+      element: User != null ? <Home /> : <Navigate replace to="/login" />,
     },
     {
       path: "/login",

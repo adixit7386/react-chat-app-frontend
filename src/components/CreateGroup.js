@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
-import User from "../redux/exportUser";
+
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
 
@@ -168,6 +168,7 @@ justify-content:center;
 `;
 
 const CreateGroup = ({ toggle }) => {
+  const User = useSelector((state) => state.user.currentuser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");

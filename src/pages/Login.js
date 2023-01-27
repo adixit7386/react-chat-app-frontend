@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
 import ForumIcon from "@mui/icons-material/Forum";
 import { useNavigate, Navigate } from "react-router-dom";
+
 import axios from "axios";
 const Container = Styled.div`
 height:100vh;
@@ -130,11 +131,14 @@ const Login = () => {
       );
 
       dispatch(loginSuccess(res.data));
-      <Navigate replace to="/" />;
-      navigate("/");
+      // navigate("/");
+      // var user2 = {};
+      // user2 = Users();
+      // console.log(user2);
       // setTimeout(() => {
-      // }, User);
-      console.log("hello world");
+      navigate("/");
+      // }, 1000);
+      // console.log("hello world");
     } catch (err) {
       ManageNotification("username or password is incorrect");
       console.log(err);

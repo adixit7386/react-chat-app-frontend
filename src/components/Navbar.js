@@ -1,6 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
-import User from "../redux/exportUser";
+
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import MailIcon from "@mui/icons-material/Mail";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -129,7 +129,7 @@ const Navbar = () => {
     cursor: "pointer",
   };
   const toggleBar = useSelector((state) => state.accountbar.toggle);
-
+  const User = useSelector((state) => state.user.currentUser);
   const handleClick = async () => {
     dispatch(toggleAccountBar());
   };

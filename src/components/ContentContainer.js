@@ -7,7 +7,7 @@ import { togglePersonBar } from "../redux/personReducer";
 import { getSender } from "../config/chatLogics";
 import UpdateGroup from "./UpdateGroup";
 import axios from "axios";
-import User from "../redux/exportUser";
+
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
@@ -198,6 +198,7 @@ const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
   const activeChat = useSelector((item) => item.activechat.active);
+  const User = useSelector((state) => state.user.currentUser);
   const handleClick = () => {
     dispatch(togglePersonBar());
   };

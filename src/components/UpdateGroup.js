@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 import Toast from "./Toast";
 import axios from "axios";
-import User from "../redux/exportUser";
+
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
 import CloseIcon from "@mui/icons-material/Close";
@@ -182,6 +182,7 @@ const CreateGroup = ({ toggle }) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
+  const User = useSelector((state) => state.user.currentUser);
   const [isnotification, setIsNotification] = useState(false);
   const [notification, setNotification] = useState("");
   const [addedUsers, setAddedUsers] = useState([]);

@@ -8,4 +8,4 @@ if (localStorage.getItem("persist:root") !== undefined) {
   }
 }
 
-module.exports = user;
+export default user;

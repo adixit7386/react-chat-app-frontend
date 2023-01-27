@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
-import user from "../redux/exportUser";
+
 import { logout } from "../redux/userReducer";
 import { resetActiveChat } from "../redux/activeChatReducer";
 
@@ -83,7 +83,7 @@ height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user.currentUser);
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
       dispatch(toggleAccountBar());

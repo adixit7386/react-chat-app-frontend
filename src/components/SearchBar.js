@@ -5,7 +5,7 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
 import { useNavigate } from "react-router-dom";
-import User from "../redux/exportUser";
+
 import Toast from "../components/Toast";
 import axios from "axios";
 import { toggleUpdateChat } from "../redux/updateChats";
@@ -180,6 +180,7 @@ width:50px;`;
 const SearchBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const User = useSelector((state) => state.user.currentUser);
   let toggle = useSelector((state) => state.sidebar.toggle);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
