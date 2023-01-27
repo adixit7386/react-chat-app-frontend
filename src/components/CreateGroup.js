@@ -7,7 +7,7 @@ import axios from "axios";
 
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
-
+import { toggleUpdateChat } from "../redux/updateChats";
 import CloseIcon from "@mui/icons-material/Close";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -168,7 +168,7 @@ justify-content:center;
 `;
 
 const CreateGroup = ({ toggle }) => {
-  const User = useSelector((state) => state.user.currentuser);
+  const User = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -240,7 +240,7 @@ const CreateGroup = ({ toggle }) => {
         }
       );
       dispatch(setActiveChat(data));
-
+      dispatch(toggleUpdateChat());
       dispatch(toggleCreateGroup());
       navigate("/");
     } catch (err) {

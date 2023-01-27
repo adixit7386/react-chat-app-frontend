@@ -197,7 +197,7 @@ width:45px;`;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
-  const activeChat = useSelector((item) => item.activechat.active);
+  const activeChat = useSelector((item) => item.activechat?.active);
   const User = useSelector((state) => state.user.currentUser);
   const handleClick = () => {
     dispatch(togglePersonBar());
@@ -208,7 +208,7 @@ const ContentContainer = () => {
   const fetchMessage = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/message/${activeChat._id}`,
+        `http://localhost:5000/api/message/${activeChat?._id}`,
         {
           headers: {
             Authorization: `Bearer ${User.accessToken}`,
@@ -234,7 +234,7 @@ const ContentContainer = () => {
     if (message === "") {
       return;
     }
-    let content = { chatId: activeChat._id, message: message };
+    let content = { chatId: activeChat?._id, message: message };
 
     try {
       const { data } = await axios.post(
@@ -271,7 +271,7 @@ const ContentContainer = () => {
   return (
     <Container>
       <Wrapper>
-        {activeChat.isGroupChat === true ? (
+        {activeChat?.isGroupChat === true ? (
           <UpdateGroup toggle={toggleBar} />
         ) : (
           <PersonContainer toggle={toggleBar}></PersonContainer>
@@ -283,14 +283,98 @@ const ContentContainer = () => {
           </UserIconContainer> */}
           <UserDetails onClick={handleClick}>
             <Heading>
-              {activeChat.isGroupChat
-                ? activeChat.ChatName
-                : getSender(User, activeChat.users)}
+              {activeChat?.isGroupChat
+                ? activeChat?.ChatName
+                : getSender(User, activeChat?.users)}
             </Heading>
           </UserDetails>
         </HeadContainer>
         <ContentWrapper>
-          <ChatContainer id="data">
+          {activeChat ? (
+            <>
+              <ChatContainer id="data">
+                {fetchmessage.map((item, index) => {
+                  if (item.sender._id === User._id) {
+                    return (
+                      <MessageContainer>
+                        <UserMessage>
+                          <MessageDetail>
+                            <NameText>You</NameText>
+                            <TimeText>{item.createdAt.getTime}</TimeText>
+                          </MessageDetail>
+                          <MessageContent>
+                            <MessageText>{item.content}</MessageText>
+                          </MessageContent>
+                        </UserMessage>
+                        <UserIconContainer>
+                          {isSameUser(fetchmessage, index) && (
+                            <Img src={item.sender.image} />
+                          )}
+                        </UserIconContainer>
+                      </MessageContainer>
+                    );
+                  } else {
+                    return (
+                      <MessageContainerSender>
+                        <UserIconContainer>
+                          {isSameUser(fetchmessage, index) && (
+                            <Img src={item.sender.image} />
+                          )}
+                        </UserIconContainer>
+                        <SenderMessage>
+                          <MessageDetail>
+                            <NameTextSender>{item.sender.name}</NameTextSender>
+                            <TimeText>2.14 pm</TimeText>
+                          </MessageDetail>
+                          <MessageContent>
+                            <MessageText>{item.content}</MessageText>
+                          </MessageContent>
+                        </SenderMessage>
+                      </MessageContainerSender>
+                    );
+                  }
+                })}
+              </ChatContainer>
+              <SendContainer>
+                <Center>
+                  <InputContainer
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter") {
+                        sendMessage();
+                      }
+                    }}
+                  >
+                    <Input
+                      value={message}
+                      placeholder="Send Messages"
+                      className="NavbarInput"
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </InputContainer>
+                  <SearchIconContainer>
+                    <SendIcon
+                      style={{
+                        height: "35px",
+                        width: "35px",
+                        cursor: "pointer",
+                        color: "#0081B4",
+                        "@media max-width:(480px)": {
+                          height: "30px",
+                          width: "30px",
+                        },
+                      }}
+                      onClick={() => {
+                        sendMessage();
+                      }}
+                    />
+                  </SearchIconContainer>
+                </Center>
+              </SendContainer>
+            </>
+          ) : (
+            <div>hello world</div>
+          )}
+          {/* <ChatContainer id="data">
             {fetchmessage.map((item, index) => {
               if (item.sender._id === User._id) {
                 return (
@@ -367,7 +451,7 @@ const ContentContainer = () => {
                 />
               </SearchIconContainer>
             </Center>
-          </SendContainer>
+          </SendContainer> */}
         </ContentWrapper>
       </Wrapper>
     </Container>

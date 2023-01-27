@@ -202,7 +202,7 @@ const SidebarContainer = () => {
         {chatList?.map((item) => (
           <ChatContainer
             onClick={() => handleActiveChat(item)}
-            selected={item._id === activeChat._id ? true : false}
+            selected={item._id === activeChat?._id ? true : false}
           >
             <ChatName>
               {item?.isGroupChat
