@@ -130,6 +130,7 @@ const Login = () => {
       );
 
       dispatch(loginSuccess(res.data));
+      <Navigate replace to="/" />;
       navigate("/");
       // setTimeout(() => {
       // }, User);

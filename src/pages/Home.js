@@ -18,6 +18,7 @@ justify-content:center;
 
 const Home = () => {
   const createGroup = useSelector((state) => state.creategroup.group);
+
   return (
     <Container>
       {createGroup && <CreateGroup />}

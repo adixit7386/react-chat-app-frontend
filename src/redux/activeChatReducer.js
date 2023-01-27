@@ -9,9 +9,12 @@ const activeChatSlice = createSlice({
     setActiveChat: (state, action) => {
       state.active = action.payload;
     },
+    resetActiveChat: (state) => {
+      state.active = {};
+    },
   },
 });
 
-export const { setActiveChat } = activeChatSlice.actions;
+export const { setActiveChat, resetActiveChat } = activeChatSlice.actions;
 
 export default activeChatSlice.reducer;

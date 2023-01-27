@@ -28,7 +28,8 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: User != null ? <Home /> : <Navigate replace to="/login" />,
+      element: <Home />,
+      // element: User != null ? <Home /> : <Navigate replace to="/login" />,
     },
     {
       path: "/login",

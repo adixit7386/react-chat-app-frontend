@@ -5,6 +5,7 @@ import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
 import user from "../redux/exportUser";
 import { logout } from "../redux/userReducer";
+import { resetActiveChat } from "../redux/activeChatReducer";
 
 const ParentContainer = Styled.div`
 position:absolute;
@@ -82,7 +83,6 @@ height:15%;`;
 const PersonContainer = ({ toggle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const activeChat = useSelector((state) => state.activechat.active);
 
   const handleClick = (e) => {
     if (e.target.classList.contains("parent")) {
@@ -92,6 +92,7 @@ const PersonContainer = ({ toggle }) => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(toggleAccountBar());
+    dispatch(resetActiveChat());
     navigate("/login");
   };
   return (
