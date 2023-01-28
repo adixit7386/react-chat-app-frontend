@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 import { getSender } from "../config/chatLogics";
 import UpdateGroup from "./UpdateGroup";
+import io from "socket.io-client";
 import axios from "axios";
 
 const Container = Styled.div`
@@ -194,17 +195,42 @@ border-radius:50%;
 object-fit:cover;
 width:45px;`;
 
+const SelectChatMessage = Styled.h1`
+font-size:25px;
+color:lightgrey;
+margin:0 auto;
+`;
+
+const ENDPOINT = "http://localhost:5000/";
+var socket, selectedChatCompare;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
   const activeChat = useSelector((item) => item.activechat?.active);
   const User = useSelector((state) => state.user.currentUser);
+  const [socketConnected, setSocketConnected] = useState(false);
+
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const handleClick = () => {
     dispatch(togglePersonBar());
   };
 
   const [message, setMessage] = useState("");
   const [fetchmessage, setFetchmessage] = useState([]);
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", User);
+    socket.on("connected", () => {
+      setSocketConnected(true);
+    });
+    socket.on("typing", () => {
+      setIsTyping(true);
+    });
+    socket.on("stop typing", () => {
+      setIsTyping(false);
+    });
+  }, []);
   const fetchMessage = async () => {
     try {
       const { data } = await axios.get(
@@ -216,6 +242,7 @@ const ContentContainer = () => {
         }
       );
       setFetchmessage(data);
+      socket.emit("join chat", activeChat?._id);
       setTimeout(() => {
         var elem = document.getElementById("data");
 
@@ -227,10 +254,23 @@ const ContentContainer = () => {
   };
   useEffect(() => {
     fetchMessage();
-    return;
+    selectedChatCompare = activeChat;
   }, [activeChat]);
 
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare?._id !== newMessageReceived?.Chat?._id
+      ) {
+        //give notification
+      } else {
+        setFetchmessage([...fetchmessage, newMessageReceived]);
+      }
+    });
+  });
   const sendMessage = async () => {
+    socket.emit("stop typing", activeChat?._id);
     if (message === "") {
       return;
     }
@@ -247,6 +287,7 @@ const ContentContainer = () => {
         }
       );
       fetchMessage();
+      socket.emit("new message", data);
       setMessage("");
       setTimeout(() => {
         var elem = document.getElementById("data");
@@ -268,6 +309,28 @@ const ContentContainer = () => {
     }
   };
 
+  const typingHandler = (e) => {
+    setMessage(e.target.value);
+    if (!socketConnected) {
+      return;
+    }
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", activeChat?._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var TimerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+
+      if (timeDiff >= TimerLength && typing) {
+        socket.emit("stop typing", activeChat?._id);
+        setTyping(false);
+      }
+    }, TimerLength);
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -287,6 +350,9 @@ const ContentContainer = () => {
                 ? activeChat?.ChatName
                 : getSender(User, activeChat?.users)}
             </Heading>
+            {isTyping && (
+              <h6 style={{ color: "green", margin: "0px" }}>typing...</h6>
+            )}
           </UserDetails>
         </HeadContainer>
         <ContentWrapper>
@@ -348,7 +414,7 @@ const ContentContainer = () => {
                       value={message}
                       placeholder="Send Messages"
                       className="NavbarInput"
-                      onChange={(e) => setMessage(e.target.value)}
+                      onChange={(e) => typingHandler(e)}
                     />
                   </InputContainer>
                   <SearchIconContainer>
@@ -372,7 +438,11 @@ const ContentContainer = () => {
               </SendContainer>
             </>
           ) : (
-            <div>hello world</div>
+            <ChatContainer>
+              <SelectChatMessage>
+                Please Select a Chat to Continue
+              </SelectChatMessage>
+            </ChatContainer>
           )}
           {/* <ChatContainer id="data">
             {fetchmessage.map((item, index) => {
