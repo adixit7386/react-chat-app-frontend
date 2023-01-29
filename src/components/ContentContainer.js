@@ -229,14 +229,14 @@ const ContentContainer = () => {
   }, []);
   useEffect(() => {
     socket.on("typing", (activeChatId) => {
-      if (activeChat._id === activeChatId) {
+      if (activeChat?._id === activeChatId) {
         setIsTyping(true);
       } else {
         setIsTyping(false);
       }
     });
     socket.on("stop typing", (activeChatId) => {
-      if (activeChat._id === activeChatId) {
+      if (activeChat?._id === activeChatId) {
         setIsTyping(false);
       }
     });
@@ -273,17 +273,26 @@ const ContentContainer = () => {
         !selectedChatCompare ||
         selectedChatCompare?._id !== newMessageReceived?.Chat?._id
       ) {
-        //give notification
-        // console.log("hello");
-        if (!notification.includes(newMessageReceived)) {
-          console.log(notification);
-          dispatch(addMessage(newMessageReceived));
-        }
+        //notification
       } else {
         setFetchmessage([...fetchmessage, newMessageReceived]);
       }
     });
   });
+
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare?._id !== newMessageReceived?.Chat?._id
+      ) {
+        if (!notification.includes(newMessageReceived)) {
+          dispatch(addMessage([newMessageReceived, ...notification]));
+          // dispatch(addMessage(newMessageReceived));
+        }
+      }
+    });
+  }, []);
   const sendMessage = async () => {
     socket.emit("stop typing", activeChat?._id);
     if (message === "") {
@@ -346,6 +355,7 @@ const ContentContainer = () => {
     }, TimerLength);
   };
   // console.log(activeChat);
+  console.log(notification);
   return (
     <Container>
       <Wrapper>
@@ -365,7 +375,7 @@ const ContentContainer = () => {
                 ? activeChat?.ChatName
                 : getSender(User, activeChat?.users)}
             </Heading>
-            {isTyping && (
+            {isTyping && socketConnected && (
               <h6 style={{ color: "green", margin: "0px" }}>typing...</h6>
             )}
           </UserDetails>

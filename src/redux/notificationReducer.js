@@ -7,8 +7,9 @@ const notificationSlice = createSlice({
   },
   reducers: {
     addMessage: (state, action) => {
-      if (state.notification.includes(action.payload) === false) {
-        state.notification.push(action.payload);
+      if (!state.notification.includes(action.payload)) {
+        // state.notification.push(action.payload);
+        state.notification = action.payload;
       }
     },
     removeMessage: (state, action) => {
