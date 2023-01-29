@@ -7,6 +7,7 @@ import { togglePersonBar } from "../redux/personReducer";
 import { getSender } from "../config/chatLogics";
 import UpdateGroup from "./UpdateGroup";
 import io from "socket.io-client";
+import { addMessage } from "../redux/notificationReducer";
 import axios from "axios";
 
 const Container = Styled.div`
@@ -206,6 +207,7 @@ var socket, selectedChatCompare;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
   const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notification.notification);
   const activeChat = useSelector((item) => item.activechat?.active);
   const User = useSelector((state) => state.user.currentUser);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -224,13 +226,21 @@ const ContentContainer = () => {
     socket.on("connected", () => {
       setSocketConnected(true);
     });
-    socket.on("typing", () => {
-      setIsTyping(true);
-    });
-    socket.on("stop typing", () => {
-      setIsTyping(false);
-    });
   }, []);
+  useEffect(() => {
+    socket.on("typing", (activeChatId) => {
+      if (activeChat._id === activeChatId) {
+        setIsTyping(true);
+      } else {
+        setIsTyping(false);
+      }
+    });
+    socket.on("stop typing", (activeChatId) => {
+      if (activeChat._id === activeChatId) {
+        setIsTyping(false);
+      }
+    });
+  });
   const fetchMessage = async () => {
     try {
       const { data } = await axios.get(
@@ -264,6 +274,11 @@ const ContentContainer = () => {
         selectedChatCompare?._id !== newMessageReceived?.Chat?._id
       ) {
         //give notification
+        // console.log("hello");
+        if (!notification.includes(newMessageReceived)) {
+          console.log(notification);
+          dispatch(addMessage(newMessageReceived));
+        }
       } else {
         setFetchmessage([...fetchmessage, newMessageReceived]);
       }
@@ -286,8 +301,8 @@ const ContentContainer = () => {
           },
         }
       );
-      fetchMessage();
       socket.emit("new message", data);
+      fetchMessage();
       setMessage("");
       setTimeout(() => {
         var elem = document.getElementById("data");
@@ -330,7 +345,7 @@ const ContentContainer = () => {
       }
     }, TimerLength);
   };
-
+  // console.log(activeChat);
   return (
     <Container>
       <Wrapper>

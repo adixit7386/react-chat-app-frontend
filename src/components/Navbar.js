@@ -3,6 +3,7 @@ import Styled from "styled-components";
 
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import ForumIcon from "@mui/icons-material/Forum";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch, useSelector } from "react-redux";
@@ -163,7 +164,7 @@ const Navbar = () => {
         </Center>
         <Right>
           <MailIconContainer>
-            <MailIcon
+            <NotificationsIcon
               style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
             />
           </MailIconContainer>

@@ -37,10 +37,14 @@ margin-top:20px;
 width:100%;
 padding:7px 12px;
 border-radius:5px;
-background-color:${(props) => (props.selected ? "lightgrey" : "white")};
-box-shadow:0px 0px 5px gray;
-
+background-color:${(props) => (props.selected ? "lightgrey" : "#f6f9fa")};
+&:hover{
+  background-color:lightgrey;
+}
+transition:all 0.7s ease;
 `;
+// background-color:${(props) => (props.selected ? "lightgrey" : "#f6f9fa")};
+// box-shadow:0px 0px 5px gray;
 const ChatContainerHead = Styled.div`
 margin-top:20px;
 width:100%;
@@ -158,7 +162,7 @@ const SidebarContainer = () => {
       }
     };
     fetchChat();
-  }, [toggleUpdateChat]);
+  }, [toggleUpdateChat, User.accessToken]);
   const IconStyle = {
     height: "35px",
     width: "35px",
