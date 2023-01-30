@@ -283,6 +283,11 @@ const SearchBar = () => {
                 <Input
                   placeholder="Search Users"
                   onChange={(e) => setSearch(e.target.value)}
+                  onKeyPress={(event) => {
+                    if (event.key === "Enter") {
+                      handleClickSearch();
+                    }
+                  }}
                   className="NavbarInput"
                 />
               </InputContainer>
