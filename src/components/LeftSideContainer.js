@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Styled from "styled-components";
 import SearchBar from "../components/SearchBar";
-import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { Mobile } from "../responsive";
 import Sidebar from "../components/SidebarContainer";
@@ -25,16 +24,10 @@ ${Mobile((props) =>
 )};
 `;
 
-// const Wrapper = Styled.div`
-
-// height:content-fit;
-// display:flex;
-// align-items:center;
-// justify-content:center;
-// width:85%;
-// flex-direction:column;`;
-
 const SwitchDiv = Styled.div`
+position:sticky;
+
+
 display:flex;
 align-items:center;
 padding-left:5px;
@@ -72,7 +65,6 @@ color:grey;
 font-weight:500;`;
 
 const SidebarContainer = () => {
-  const dispatch = useDispatch();
   const [currentChat, setCurrentChat] = useState(true);
   const activeChat = useSelector((item) => item.activechat.active);
   const activeStyle = {};
@@ -98,10 +90,8 @@ const SidebarContainer = () => {
           <Span>Add Chats</Span>
         </SearchBarContainer>
       </SwitchDiv>
-      {/* <Wrapper></Wrapper> */}
+
       {currentChat ? <Sidebar /> : <SearchBar />}
-      {/* <Sidebar />
-      <SearchBar /> */}
     </Container>
   );
 };

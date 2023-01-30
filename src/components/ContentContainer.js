@@ -44,6 +44,7 @@ height:calc(100vh - 130px);
 margin-top:0px;
 border-radius:10px;
 box-shadow:0px 0px 10px lightgrey;
+
 `;
 const ChatContainer = Styled.div`
 padding:10px;
@@ -53,6 +54,7 @@ overflow:scroll;
 &::-webkit-scrollbar{
     display:none;
 }
+
 top:100px;
 scroll:bottom;
 align-items:start;
@@ -68,6 +70,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 border-bottom-right-radius:10px;
+
 border-bottom-left-radius:10px;`;
 const Center = Styled.div`
 
@@ -93,6 +96,7 @@ background-color:#f8f9fa;
 font-size: 18px;
 font-size: 18px;
 flex: 1;
+width:80%;
 border:none;
 height: 30px;
 outline:none;
@@ -137,7 +141,6 @@ height:content-fit;
 display:flex;
 align-items:center;
 justify-content:flex-end;
-
 margin:10px 0px;
 `;
 const SenderMessage = Styled.div`
