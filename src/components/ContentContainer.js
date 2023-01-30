@@ -13,6 +13,7 @@ import { addMessage } from "../redux/notificationReducer";
 import { Mobile } from "../responsive";
 import axios from "axios";
 import { validURL } from "../config/chatLogics";
+import Loader from "../components/Loader";
 
 const Container = Styled.div`
 flex:5;
@@ -220,7 +221,7 @@ const ContentContainer = () => {
   const activeChat = useSelector((item) => item.activechat?.active);
   const User = useSelector((state) => state.user.currentUser);
   const [socketConnected, setSocketConnected] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const handleClick = () => {
@@ -262,6 +263,7 @@ const ContentContainer = () => {
       );
       setFetchmessage(data);
       socket.emit("join chat", activeChat?._id);
+      setLoading(false);
       setTimeout(() => {
         var elem = document.getElementById("data");
 
@@ -272,6 +274,7 @@ const ContentContainer = () => {
     }
   };
   useEffect(() => {
+    setLoading(true);
     fetchMessage();
     selectedChatCompare = activeChat;
   }, [activeChat]);
@@ -285,6 +288,11 @@ const ContentContainer = () => {
         //notification
       } else {
         setFetchmessage([...fetchmessage, newMessageReceived]);
+        setTimeout(() => {
+          var elem = document.getElementById("data");
+
+          elem.scrollTop = elem.scrollHeight;
+        }, 100);
       }
     });
   });
@@ -402,61 +410,68 @@ const ContentContainer = () => {
         <ContentWrapper>
           {activeChat ? (
             <>
-              <ChatContainer id="data">
-                {fetchmessage.map((item, index) => {
-                  if (item.sender._id === User._id) {
-                    return (
-                      <MessageContainer>
-                        <UserMessage>
-                          <MessageDetail>
-                            <NameText>You</NameText>
-                            <TimeText>{item.createdAt.getTime}</TimeText>
-                          </MessageDetail>
-                          <MessageContent>
-                            <MessageText>{item.content}</MessageText>
-                          </MessageContent>
-                        </UserMessage>
-                        <UserIconContainer>
-                          {isSameUser(fetchmessage, index) && (
-                            <Img
-                              src={
-                                validURL(item.sender.image)
-                                  ? item.sender.image
-                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                              }
-                            />
-                          )}
-                        </UserIconContainer>
-                      </MessageContainer>
-                    );
-                  } else {
-                    return (
-                      <MessageContainerSender>
-                        <UserIconContainer>
-                          {isSameUser(fetchmessage, index) && (
-                            <Img
-                              src={
-                                validURL(item.sender.image)
-                                  ? item.sender.image
-                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                              }
-                            />
-                          )}
-                        </UserIconContainer>
-                        <SenderMessage>
-                          <MessageDetail>
-                            <NameTextSender>{item.sender.name}</NameTextSender>
-                            <TimeText>2.14 pm</TimeText>
-                          </MessageDetail>
-                          <MessageContent>
-                            <MessageText>{item.content}</MessageText>
-                          </MessageContent>
-                        </SenderMessage>
-                      </MessageContainerSender>
-                    );
-                  }
-                })}
-              </ChatContainer>
+              {loading ? (
+                <Loader></Loader>
+              ) : (
+                <ChatContainer id="data">
+                  {fetchmessage.map((item, index) => {
+                    if (item.sender._id === User._id) {
+                      return (
+                        <MessageContainer>
+                          <UserMessage>
+                            <MessageDetail>
+                              <NameText>You</NameText>
+                              <TimeText>{item.createdAt.getTime}</TimeText>
+                            </MessageDetail>
+                            <MessageContent>
+                              <MessageText>{item.content}</MessageText>
+                            </MessageContent>
+                          </UserMessage>
+                          <UserIconContainer>
+                            {isSameUser(fetchmessage, index) && (
+                              <Img
+                                src={
+                                  validURL(item.sender.image)
+                                    ? item.sender.image
+                                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                              />
+                            )}
+                          </UserIconContainer>
+                        </MessageContainer>
+                      );
+                    } else {
+                      return (
+                        <MessageContainerSender>
+                          <UserIconContainer>
+                            {isSameUser(fetchmessage, index) && (
+                              <Img
+                                src={
+                                  validURL(item.sender.image)
+                                    ? item.sender.image
+                                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                              />
+                            )}
+                          </UserIconContainer>
+                          <SenderMessage>
+                            <MessageDetail>
+                              <NameTextSender>
+                                {item.sender.name}
+                              </NameTextSender>
+                              <TimeText>2.14 pm</TimeText>
+                            </MessageDetail>
+                            <MessageContent>
+                              <MessageText>{item.content}</MessageText>
+                            </MessageContent>
+                          </SenderMessage>
+                        </MessageContainerSender>
+                      );
+                    }
+                  })}
+                </ChatContainer>
+              )}
+
               <SendContainer>
                 <Center>
                   <InputContainer

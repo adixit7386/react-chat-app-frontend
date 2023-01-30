@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { validURL } from "../config/chatLogics";
 import { logout } from "../redux/userReducer";
 import { resetActiveChat } from "../redux/activeChatReducer";
-
+import { Mobile } from "../responsive";
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -21,7 +21,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 transition:background-color 0.5s ease;
-
 `;
 
 const Container = Styled.div`
@@ -30,7 +29,9 @@ height:300px;
 border-radius:10px;
 
 box-shadow:0px 0px 20px grey;
-width:400px;`;
+width:400px;
+
+${Mobile({ maxWidth: "300px" })};`;
 
 const HeadingContainer = Styled.div`
 height:25%;

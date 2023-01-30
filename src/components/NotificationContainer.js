@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeMessage } from "../redux/notificationReducer";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleNotificationBar } from "../redux/notificationBarReducer";
+
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;

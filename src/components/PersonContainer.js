@@ -2,7 +2,7 @@ import React from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
-
+import { Mobile } from "../responsive";
 import {
   getSender,
   getChatImage,
@@ -28,7 +28,7 @@ const Container = Styled.div`
 background-color:white;
 height:300px;
 border-radius:10px;
-
+${Mobile({ maxWidth: "350px" })};
 box-shadow:0px 0px 20px grey;
 width:400px;`;
 

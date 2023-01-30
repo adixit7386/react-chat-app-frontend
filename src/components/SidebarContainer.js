@@ -7,6 +7,7 @@ import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { validURL } from "../config/chatLogics";
+import Loader from "../components/Loader";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -98,25 +99,6 @@ const SidebarContainer = () => {
     };
     fetchChat();
   }, [toggleUpdateChat, User.accessToken]);
-  let filteredChats;
-  // const handleSearch = (e) => {
-  //   setSearch(e.target.value);
-  //   // const filter = (item) => {
-  //   //   if (item.isGroupChat) {
-  //   //     return item.ChatName.toLowerCase().includes(search);
-  //   //   } else {
-  //   //     return getSender(User, item.users).toLowerCase().includes(search);
-  //   //   }
-  //   // };
-  //   filteredChats = chatList.filter((item) => {
-  //     if (item.isGroupChat) {
-  //       return item.ChatName.toLowerCase().includes(search);
-  //     } else {
-  //       return getSender(User, item.users).toLowerCase().includes(search);
-  //     }
-  //   });
-  // };
-  console.log(filteredChats);
 
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
@@ -125,6 +107,7 @@ const SidebarContainer = () => {
   return (
     <Container active={activeChat === null ? false : true}>
       <Wrapper>
+        {chatList.length === 0 && <Loader></Loader>}
         {chatList?.map((item) => (
           <ChatContainer
             onClick={() => handleActiveChat(item)}

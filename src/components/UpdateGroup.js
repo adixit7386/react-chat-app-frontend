@@ -8,7 +8,7 @@ import { validURL } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { Mobile } from "../responsive";
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -32,6 +32,7 @@ height:content-fit;
 border-radius:10px;
 padding:10px 20px;
 box-shadow:0px 0px 20px grey;
+${Mobile({ maxWidth: "300px" })};
 width:400px;`;
 
 const HeadingContainer = Styled.div`

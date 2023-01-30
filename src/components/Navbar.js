@@ -1,7 +1,7 @@
 import React from "react";
 import Styled from "styled-components";
 import Badge from "@mui/material/Badge";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
+
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ForumIcon from "@mui/icons-material/Forum";
 import { useDispatch, useSelector } from "react-redux";

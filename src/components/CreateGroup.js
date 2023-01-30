@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 import axios from "axios";
-
+import { validURL } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
+import { Mobile } from "../responsive";
 import CloseIcon from "@mui/icons-material/Close";
 const ParentContainer = Styled.div`
 position:absolute;
@@ -32,7 +33,8 @@ height:content-fit;
 border-radius:10px;
 padding:10px 20px;
 box-shadow:0px 0px 20px grey;
-width:400px;`;
+width:400px;
+${Mobile({ maxWidth: "300px" })};`;
 
 const HeadingContainer = Styled.div`
 height:25%;
@@ -302,7 +304,13 @@ const CreateGroup = ({ toggle }) => {
                 }}
               >
                 <UserIconContainer>
-                  <Img src={item.image} />
+                  <Img
+                    src={
+                      validURL(item.image)
+                        ? item.image
+                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    }
+                  />
                 </UserIconContainer>
                 <UserDetails>
                   <SecondHeading>{item.name}</SecondHeading>

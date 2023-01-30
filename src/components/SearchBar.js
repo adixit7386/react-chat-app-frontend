@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
-
+import Loader from "../components/Loader";
 import Toast from "../components/Toast";
 import axios from "axios";
 import { validURL } from "../config/chatLogics";
@@ -194,7 +194,7 @@ const SearchBar = () => {
   let toggle = useSelector((state) => state.sidebar.toggle);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   const createChat = async (userId) => {
     try {
       const { data } = await axios.post(
@@ -242,6 +242,7 @@ const SearchBar = () => {
     setIsNotification(false);
   };
   const handleClickSearch = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${search}`,
@@ -251,6 +252,7 @@ const SearchBar = () => {
       if (data.length === 0) {
         ManageNotification("No User Found");
       }
+      setLoading(false);
     } catch (error) {
       ManageNotification("Search Failed");
     }
@@ -274,6 +276,7 @@ const SearchBar = () => {
               </Headings>
             </Centers>
           </ItemTop>
+
           <ItemTop item={"head"}>
             <Center>
               <InputContainer>
@@ -300,29 +303,40 @@ const SearchBar = () => {
               </SearchIconContainer>
             </Center>
           </ItemTop>
-          {data.length > 0 &&
-            data?.map((item) => (
-              <Item
-                onClick={() => {
-                  createChat(item._id);
-                }}
-              >
-                <UserIconContainer>
-                  <Img
-                    src={
-                      validURL(item.image)
-                        ? item.image
-                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                    }
-                  />
-                </UserIconContainer>
-                <UserDetails>
-                  <Heading>{item.name}</Heading>
-                  <Br />
-                  <Username>{item.username.slice(0, 18)}</Username>
-                </UserDetails>
-              </Item>
-            ))}
+          {loading && <Loader></Loader>}
+          {data.length > 0
+            ? data?.map((item) => (
+                <Item
+                  onClick={() => {
+                    createChat(item._id);
+                  }}
+                >
+                  <UserIconContainer>
+                    <Img
+                      src={
+                        validURL(item.image)
+                          ? item.image
+                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                      }
+                    />
+                  </UserIconContainer>
+                  <UserDetails>
+                    <Heading>{item.name}</Heading>
+                    <Br />
+                    <Username>{item.username.slice(0, 18)}</Username>
+                  </UserDetails>
+                </Item>
+              ))
+            : search &&
+              loading && (
+                <ItemTop>
+                  <Centers>
+                    <Headings onClick={() => dispatch(toggleCreateGroup())}>
+                      No User Found
+                    </Headings>
+                  </Centers>
+                </ItemTop>
+              )}
         </Wrapper>
       </Container>
     </ParentContainer>
