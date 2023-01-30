@@ -12,6 +12,7 @@ import io from "socket.io-client";
 import { addMessage } from "../redux/notificationReducer";
 import { Mobile } from "../responsive";
 import axios from "axios";
+import { validURL } from "../config/chatLogics";
 
 const Container = Styled.div`
 flex:5;
@@ -53,7 +54,7 @@ overflow:scroll;
 }
 top:100px;
 scroll:bottom;
-align-items:center;
+align-items:start;
 justify-content:center;
 flex-direction:column;
 
@@ -209,7 +210,6 @@ font-size:25px;
 color:lightgrey;
 margin:0 auto;
 `;
-const BackwardContainer = Styled.div``;
 
 const ENDPOINT = "http://localhost:5000/";
 var socket, selectedChatCompare;
@@ -297,7 +297,6 @@ const ContentContainer = () => {
       ) {
         if (!notification.includes(newMessageReceived)) {
           dispatch(addMessage([newMessageReceived, ...notification]));
-          // dispatch(addMessage(newMessageReceived));
         }
       }
     });
@@ -383,9 +382,6 @@ const ContentContainer = () => {
         )}
 
         <HeadContainer>
-          {/* <UserIconContainer onClick={handleClick}>
-            <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
-          </UserIconContainer> */}
           <ArrowBackIcon
             onClick={() => {
               handleResetActiveChat();
@@ -422,7 +418,13 @@ const ContentContainer = () => {
                         </UserMessage>
                         <UserIconContainer>
                           {isSameUser(fetchmessage, index) && (
-                            <Img src={item.sender.image} />
+                            <Img
+                              src={
+                                validURL(item.sender.image)
+                                  ? item.sender.image
+                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                              }
+                            />
                           )}
                         </UserIconContainer>
                       </MessageContainer>
@@ -432,7 +434,13 @@ const ContentContainer = () => {
                       <MessageContainerSender>
                         <UserIconContainer>
                           {isSameUser(fetchmessage, index) && (
-                            <Img src={item.sender.image} />
+                            <Img
+                              src={
+                                validURL(item.sender.image)
+                                  ? item.sender.image
+                                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                              }
+                            />
                           )}
                         </UserIconContainer>
                         <SenderMessage>
@@ -492,84 +500,6 @@ const ContentContainer = () => {
               </SelectChatMessage>
             </ChatContainer>
           )}
-          {/* <ChatContainer id="data">
-            {fetchmessage.map((item, index) => {
-              if (item.sender._id === User._id) {
-                return (
-                  <MessageContainer>
-                    <UserMessage>
-                      <MessageDetail>
-                        <NameText>You</NameText>
-                        <TimeText>{item.createdAt.getTime}</TimeText>
-                      </MessageDetail>
-                      <MessageContent>
-                        <MessageText>{item.content}</MessageText>
-                      </MessageContent>
-                    </UserMessage>
-                    <UserIconContainer>
-                      {isSameUser(fetchmessage, index) && (
-                        <Img src={item.sender.image} />
-                      )}
-                    </UserIconContainer>
-                  </MessageContainer>
-                );
-              } else {
-                return (
-                  <MessageContainerSender>
-                    <UserIconContainer>
-                      {isSameUser(fetchmessage, index) && (
-                        <Img src={item.sender.image} />
-                      )}
-                    </UserIconContainer>
-                    <SenderMessage>
-                      <MessageDetail>
-                        <NameTextSender>{item.sender.name}</NameTextSender>
-                        <TimeText>2.14 pm</TimeText>
-                      </MessageDetail>
-                      <MessageContent>
-                        <MessageText>{item.content}</MessageText>
-                      </MessageContent>
-                    </SenderMessage>
-                  </MessageContainerSender>
-                );
-              }
-            })}
-          </ChatContainer>
-          <SendContainer>
-            <Center>
-              <InputContainer
-                onKeyPress={(event) => {
-                  if (event.key === "Enter") {
-                    sendMessage();
-                  }
-                }}
-              >
-                <Input
-                  value={message}
-                  placeholder="Send Messages"
-                  className="NavbarInput"
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-              </InputContainer>
-              <SearchIconContainer>
-                <SendIcon
-                  style={{
-                    height: "35px",
-                    width: "35px",
-                    cursor: "pointer",
-                    color: "#0081B4",
-                    "@media max-width:(480px)": {
-                      height: "30px",
-                      width: "30px",
-                    },
-                  }}
-                  onClick={() => {
-                    sendMessage();
-                  }}
-                />
-              </SearchIconContainer>
-            </Center>
-          </SendContainer> */}
         </ContentWrapper>
       </Wrapper>
     </Container>

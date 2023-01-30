@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
-import { useNavigate } from "react-router-dom";
+
 import Toast from "../components/Toast";
 import axios from "axios";
-import AddIcon from "@mui/icons-material/Add";
+import { validURL } from "../config/chatLogics";
+
 import { toggleCreateGroup } from "../redux/createGroupReducer";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
@@ -45,7 +46,6 @@ transition:all 0.5s ease-out;
 
 
 `;
-// margin-left:${(props) => (props.toggle === true ? "0px" : "-400px")};
 
 const Wrapper = Styled.div`
 width:80%;
@@ -308,7 +308,13 @@ const SearchBar = () => {
                 }}
               >
                 <UserIconContainer>
-                  <Img src={item.image} />
+                  <Img
+                    src={
+                      validURL(item.image)
+                        ? item.image
+                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    }
+                  />
                 </UserIconContainer>
                 <UserDetails>
                   <Heading>{item.name}</Heading>

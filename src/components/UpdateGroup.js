@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 import Toast from "./Toast";
 import axios from "axios";
-
+import { validURL } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
 import CloseIcon from "@mui/icons-material/Close";
@@ -313,8 +313,8 @@ const CreateGroup = ({ toggle }) => {
           <Heading>{activeChat.ChatName}</Heading>
         </HeadingContainer>
         <AddedUsers>
-          {activeChat.users.length > 0 &&
-            activeChat.users?.map((item) => (
+          {activeChat?.users.length > 0 &&
+            activeChat?.users?.map((item) => (
               <UserButton>
                 <NameContainer>
                   <Span>{item?.name}</Span>
@@ -355,7 +355,13 @@ const CreateGroup = ({ toggle }) => {
                 }}
               >
                 <UserIconContainer>
-                  <Img src={item?.image} />
+                  <Img
+                    src={
+                      validURL(item?.image)
+                        ? item?.image
+                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    }
+                  />
                 </UserIconContainer>
                 <UserDetails>
                   <SecondHeading>{item?.name}</SecondHeading>

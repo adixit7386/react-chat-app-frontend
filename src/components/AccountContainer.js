@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAccountBar } from "../redux/accountReducer";
 import { useNavigate } from "react-router-dom";
-
+import { validURL } from "../config/chatLogics";
 import { logout } from "../redux/userReducer";
 import { resetActiveChat } from "../redux/activeChatReducer";
 
@@ -56,7 +56,7 @@ margin:0px;
 width:100px ;
 border-radius:50%;
 object-fit:cover;
-border:solid 2px green;
+
 `;
 
 const EmailContainer = Styled.div`
@@ -110,8 +110,9 @@ const PersonContainer = ({ toggle }) => {
         <ImageContainer>
           <Image
             src={
-              user?.image ||
-              "https://t4.ftcdn.net/jpg/05/09/59/75/240_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg"
+              validURL(user?.image)
+                ? user?.image
+                : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
             }
           />
         </ImageContainer>

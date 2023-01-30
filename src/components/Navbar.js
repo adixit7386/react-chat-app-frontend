@@ -4,13 +4,12 @@ import Badge from "@mui/material/Badge";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ForumIcon from "@mui/icons-material/Forum";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleSidebar } from "../redux/sideReducer";
 import { toggleAccountBar } from "../redux/accountReducer";
 import AccountContainer from "../components/AccountContainer";
 import { toggleNotificationBar } from "../redux/notificationBarReducer";
 import NotificationContainer from "./NotificationContainer";
+import { validURL } from "../config/chatLogics";
 const Container = Styled.div`
 
 display:flex;
@@ -32,13 +31,6 @@ display:flex;
 align-items:center;
 
 justify-content:center;
-`;
-const Left = Styled.div`
-flex:1;
-display:flex;
-align-items:center;;
-justify-content:flex-start;
-
 `;
 
 const IconContainer = Styled.div`
@@ -78,20 +70,13 @@ padding:5px 10px;
 cursor:pointer;
 `;
 
-const UserNameContainer = Styled.span`
-`;
 const Img = Styled.img`
 height:40px;
 object-fit:cover;
 width:40px;
 border-radius:50%;
 margin-left:10px;
-
 `;
-const SpanSearch = Styled.span`
-font-size:24px;
-cursor:pointer;
-color:grey;`;
 
 const DarkModeIconContainer = Styled.div`
 display:flex;
@@ -113,12 +98,7 @@ const Navbar = () => {
     width: "35px",
     color: "#0081B4",
   };
-  const IconStyleSearch = {
-    height: "35px",
-    width: "35px",
-    color: "grey",
-    cursor: "pointer",
-  };
+
   const IconStyleDarkMode = {
     height: "30px",
     width: "30px",
@@ -146,19 +126,6 @@ const Navbar = () => {
         <NotificationContainer></NotificationContainer>
       )}
       <Wrapper>
-        {/* <Left>
-          <IconContainer>
-            <SearchRoundedIcon
-              onClick={() => dispatch(toggleSidebar())}
-              style={IconStyleSearch}
-            />
-          </IconContainer>
-          <TitleContainer>
-            <SpanSearch onClick={() => dispatch(toggleSidebar())}>
-              Search Users
-            </SpanSearch>
-          </TitleContainer>
-        </Left> */}
         <Center>
           <IconContainer>
             <ForumIcon style={IconStyle} />
@@ -183,14 +150,15 @@ const Navbar = () => {
               />
             </Badge>
           </MailIconContainer>
-          <DarkModeIconContainer>
-            <DarkModeIcon
-              style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
-            />
-          </DarkModeIconContainer>
+
           <UserContainer clicked={true} onClick={handleClick}>
-            {/* <UserNameContainer>{User?.name}</UserNameContainer> */}
-            <Img src={User?.image} />
+            <Img
+              src={
+                validURL(User?.image)
+                  ? User?.image
+                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+              }
+            />
           </UserContainer>
         </Right>
       </Wrapper>
