@@ -215,7 +215,7 @@ color:lightgrey;
 margin:0 auto;
 `;
 
-const ENDPOINT = "http://localhost:5000/";
+const ENDPOINT = "https://livechat-backend.onrender.com/";
 var socket, selectedChatCompare;
 const ContentContainer = () => {
   const toggleBar = useSelector((state) => state.personbar.toggle);
