@@ -257,7 +257,7 @@ const ContentContainer = () => {
   const fetchMessage = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/message/${activeChat?._id}`,
+        `https://livechat-backend.onrender.com/api/message/${activeChat?._id}`,
         {
           headers: {
             Authorization: `Bearer ${User.accessToken}`,
@@ -321,7 +321,7 @@ const ContentContainer = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/message/",
+        "https://livechat-backend.onrender.com/api/message/",
         content,
         {
           headers: {

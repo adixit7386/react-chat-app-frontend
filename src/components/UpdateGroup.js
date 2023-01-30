@@ -117,21 +117,6 @@ margin-right:5px;
     outline:none;
 }`;
 
-const ButtonContainer = Styled.div`
-display:flex;
-align-items:center;
-justify-content:center;`;
-
-const Button = Styled.button`
-font-size:18px;
-padding:5px 12px;
-border:none;
-
-border-radius:5px;
-cursor:pointer;
-background-color:#0081B4;
-color:white;
-height:15%;`;
 const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
@@ -206,7 +191,7 @@ const CreateGroup = ({ toggle }) => {
   const handleClickSearch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `https://livechat-backend.onrender.com/api/user?search=${search}`,
         { headers: { Authorization: `Bearer ${User.accessToken}` } }
       );
       setData(data);
@@ -227,7 +212,7 @@ const CreateGroup = ({ toggle }) => {
       };
 
       const { data } = await axios.put(
-        "http://localhost:5000/api/chat/rename",
+        "https://livechat-backend.onrender.com/api/chat/rename",
         { ChatId: activeChat._id, ChatName: ChatName },
         config
       );
@@ -247,7 +232,7 @@ const CreateGroup = ({ toggle }) => {
 
     try {
       const { data } = await axios.put(
-        "http://localhost:5000/api/chat/groupadd",
+        "https://livechat-backend.onrender.com/api/chat/groupadd",
         users,
         {
           headers: {
@@ -278,7 +263,7 @@ const CreateGroup = ({ toggle }) => {
 
     try {
       const { data } = await axios.put(
-        "http://localhost:5000/api/chat/groupremove",
+        "https://livechat-backend.onrender.com/api/chat/groupremove",
         users,
         {
           headers: {

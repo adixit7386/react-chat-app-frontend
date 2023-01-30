@@ -198,7 +198,7 @@ const SearchBar = () => {
   const createChat = async (userId) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/chat/",
+        "https://livechat-backend.onrender.com/api/chat/",
         { userId: userId },
         {
           headers: {
@@ -245,7 +245,7 @@ const SearchBar = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `https://livechat-backend.onrender.com/api/user?search=${search}`,
         { headers: { Authorization: `Bearer ${user.accessToken}` } }
       );
       setData(data);

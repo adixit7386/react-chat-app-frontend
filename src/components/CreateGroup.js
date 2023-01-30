@@ -197,7 +197,7 @@ const CreateGroup = ({ toggle }) => {
   const handleClickSearch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/user?search=${search}`,
+        `https://livechat-backend.onrender.com/api/user?search=${search}`,
         { headers: { Authorization: `Bearer ${User.accessToken}` } }
       );
       setData(data);
@@ -232,7 +232,7 @@ const CreateGroup = ({ toggle }) => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/chat/group",
+        "https://livechat-backend.onrender.com/api/chat/group",
         group,
         {
           headers: {

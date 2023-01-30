@@ -78,11 +78,6 @@ border-radius:50%;
 margin-left:10px;
 `;
 
-const DarkModeIconContainer = Styled.div`
-display:flex;
-align-items:center;
-justify-content:center;
-padding:5px 10px;`;
 const MailIconContainer = Styled.div`
 display:flex;
 align-items:center;
@@ -118,7 +113,7 @@ const Navbar = () => {
   const handleClick = async () => {
     dispatch(toggleAccountBar());
   };
-  console.log(notification);
+
   return (
     <Container>
       <AccountContainer toggle={toggleBar}></AccountContainer>

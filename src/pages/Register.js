@@ -115,12 +115,7 @@ cursor:Pointer;`;
 
 const Warning = Styled.span`
 margin-top:10px;`;
-const RegisterTextOr = Styled.span`
-font-size: 14px;
-margin-top:20px;
 
-
-`;
 const Label = Styled.label``;
 const Login = () => {
   let user = {};
@@ -130,7 +125,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const [imgLink, setImgLink] = useState("");
 
@@ -165,10 +160,10 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/register",
+        "https://livechat-backend.onrender.com/api/user/register",
         user
       );
-      console.log(res.data);
+
       if (res.status === 201) {
         navigate("/login");
       }
@@ -178,7 +173,7 @@ const Login = () => {
   };
 
   const setFiles = (img) => {
-    setLoading(true);
+    // setLoading(true);
     if (img === undefined) {
       ManageNotification("Please select the image");
       return;
@@ -196,11 +191,11 @@ const Login = () => {
         .then((resp) => resp.json())
         .then((data) => {
           setImgLink(data.url.toString());
-          setLoading(false);
+          // setLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setLoading(false);
+          // setLoading(false);
         });
     }
   };

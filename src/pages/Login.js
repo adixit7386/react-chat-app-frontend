@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Styled from "styled-components";
 import Toast from "../components/Toast";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userReducer";
 import ForumIcon from "@mui/icons-material/Forum";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 const Container = Styled.div`
@@ -101,7 +101,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-  const User = useSelector((state) => state.user.currentUser);
+
   const user = {
     username: userName,
     password: password,
@@ -126,7 +126,7 @@ const Login = () => {
     try {
       dispatch(loginStart());
       const res = await axios.post(
-        "http://localhost:5000/api/user/login",
+        "https://livechat-backend.onrender.com/api/user/login",
         user
       );
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
 import SearchBar from "../components/SearchBar";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Mobile } from "../responsive";
 import Sidebar from "../components/SidebarContainer";
 const Container = Styled.div`
