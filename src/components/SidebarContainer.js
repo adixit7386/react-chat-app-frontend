@@ -78,8 +78,9 @@ const SidebarContainer = () => {
   const activeChat = useSelector((item) => item.activechat.active);
   const toggleUpdateChat = useSelector((state) => state.updatechats.toggle);
   const [chatList, setChatList] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     const fetchChat = async (userId) => {
       try {
         const { data } = await axios.get(
@@ -92,8 +93,10 @@ const SidebarContainer = () => {
           }
         );
         setChatList(data);
+        setLoading(false);
         // dispatch(setUserChats(data));
       } catch (err) {
+        setLoading(false);
         console.log(err);
       }
     };
@@ -107,7 +110,7 @@ const SidebarContainer = () => {
   return (
     <Container active={activeChat === null ? false : true}>
       <Wrapper>
-        {chatList.length === 0 && <Loader></Loader>}
+        {loading && <Loader></Loader>}
         {chatList?.map((item) => (
           <ChatContainer
             onClick={() => handleActiveChat(item)}

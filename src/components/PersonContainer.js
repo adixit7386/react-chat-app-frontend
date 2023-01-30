@@ -26,9 +26,10 @@ justify-content:center;
 
 const Container = Styled.div`
 background-color:white;
-height:300px;
+height:content-fit;
+
 border-radius:10px;
-${Mobile({ maxWidth: "350px" })};
+${Mobile({ maxWidth: "300px" })};
 box-shadow:0px 0px 20px grey;
 width:400px;`;
 
@@ -73,6 +74,7 @@ justify-content:center;`;
 const Button = Styled.button`
 font-size:18px;
 padding:5px 12px;
+margin-bottom:20px;
 border:none;
 border-radius:5px;
 cursor:pointer;
@@ -116,7 +118,7 @@ const PersonContainer = ({ toggle }) => {
         </ImageContainer>
         <EmailContainer>
           <HeadingEmail>
-            {getChatUserName(User, activeChat?.users)}
+            {getChatUserName(User, activeChat?.users)?.slice(0, 10)}
           </HeadingEmail>
         </EmailContainer>
         <CloseContainer>

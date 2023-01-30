@@ -25,7 +25,7 @@ transition:background-color 0.5s ease;
 
 const Container = Styled.div`
 background-color:white;
-height:300px;
+height:content-fit;
 border-radius:10px;
 
 box-shadow:0px 0px 20px grey;
@@ -77,6 +77,7 @@ font-size:18px;
 padding:5px 12px;
 border:none;
 border-radius:5px;
+margin-bottom:20px;
 cursor:pointer;
 background-color:#0081B4;
 color:white;
@@ -118,7 +119,7 @@ const PersonContainer = ({ toggle }) => {
           />
         </ImageContainer>
         <EmailContainer>
-          <HeadingEmail>{user?.email}</HeadingEmail>
+          <HeadingEmail>{user?.email?.slice(0, 10)}</HeadingEmail>
         </EmailContainer>
         <CloseContainer>
           <Button

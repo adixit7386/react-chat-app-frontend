@@ -34,7 +34,7 @@ height:content-fit;
 overflow:scroll;
 border-radius:10px;
 margin-top:70px;
-margin-right:70px;
+margin-right:20px;
 box-shadow:0px 0px 20px grey;
 width:300px;
 &::-webkit-scrollbar{

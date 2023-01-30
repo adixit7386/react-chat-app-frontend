@@ -5,6 +5,7 @@ import { Mobile } from "../responsive";
 import axios from "axios";
 import Toast from "../components/Toast";
 import ForumIcon from "@mui/icons-material/Forum";
+import { validURL } from "../config/chatLogics";
 const Container = Styled.div`
 
 height:100vh;
@@ -115,7 +116,11 @@ cursor:Pointer;`;
 
 const Warning = Styled.span`
 margin-top:10px;`;
-
+const Img = Styled.img`
+height:40px;
+width:40px;
+border-radius:50%;
+object-fit:cover;`;
 const Label = Styled.label``;
 const Login = () => {
   let user = {};
@@ -125,7 +130,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [name, setName] = useState("");
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [imgLink, setImgLink] = useState("");
 
@@ -173,9 +178,10 @@ const Login = () => {
   };
 
   const setFiles = (img) => {
-    // setLoading(true);
+    setLoading(true);
     if (img === undefined) {
       ManageNotification("Please select the image");
+      setLoading(false);
       return;
     }
 
@@ -184,18 +190,18 @@ const Login = () => {
       data.append("file", img);
       data.append("upload_preset", "react-chat-app");
       data.append("cloud_name", "dcvv2vevf");
-      fetch("  https://api.cloudinary.com/v1_1/dcvv2vevf/image/upload", {
+      fetch("https://api.cloudinary.com/v1_1/dcvv2vevf/image/upload", {
         method: "post",
         body: data,
       })
         .then((resp) => resp.json())
         .then((data) => {
           setImgLink(data.url.toString());
-          // setLoading(false);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          // setLoading(false);
+          setLoading(false);
         });
     }
   };
@@ -229,10 +235,21 @@ const Login = () => {
             />
             <Label
               htmlFor="image"
-              style={{ width: "90%", color: "grey", cursor: "pointer" }}
+              style={{
+                width: "calc(90% - 40px)",
+                color: "grey",
+                cursor: "pointer",
+              }}
             >
-              Upload your picture
+              {loading ? "uploading..." : "Upload your picture"}
             </Label>
+            <Img
+              src={
+                validURL(imgLink)
+                  ? imgLink
+                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+              }
+            />
           </InputContainer>
           <InputContainer name="username">
             <Input

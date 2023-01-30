@@ -196,6 +196,7 @@ const SearchBar = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const createChat = async (userId) => {
+    console.log(userId);
     try {
       const { data } = await axios.post(
         "https://livechat-backend.onrender.com/api/chat/",
@@ -207,7 +208,7 @@ const SearchBar = () => {
           },
         }
       );
-
+      console.log(data);
       dispatch(toggleSidebar());
       dispatch(setActiveChat(data));
       dispatch(toggleUpdateChat());
