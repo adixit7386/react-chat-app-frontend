@@ -62,7 +62,7 @@ const Center = Styled.div`
 flex:1;
 display:flex;
 align-items:center;
-justify-content:center;`;
+justify-content:flex-start;`;
 
 const Right = Styled.div`
 flex:1;
@@ -74,16 +74,16 @@ const UserContainer = Styled.div`
 display:flex;
 align-items:center;
 padding:5px 10px;
-border-radius:50px;
+
 cursor:pointer;
-border:solid 1px gray;
 `;
 
 const UserNameContainer = Styled.span`
 `;
 const Img = Styled.img`
-height:30px;
-width:30px;
+height:40px;
+object-fit:cover;
+width:40px;
 border-radius:50%;
 margin-left:10px;
 
@@ -142,11 +142,11 @@ const Navbar = () => {
   return (
     <Container>
       <AccountContainer toggle={toggleBar}></AccountContainer>
-      {notification.length > 0 && (
+      {notification.length > 1 && (
         <NotificationContainer></NotificationContainer>
       )}
       <Wrapper>
-        <Left>
+        {/* <Left>
           <IconContainer>
             <SearchRoundedIcon
               onClick={() => dispatch(toggleSidebar())}
@@ -158,7 +158,7 @@ const Navbar = () => {
               Search Users
             </SpanSearch>
           </TitleContainer>
-        </Left>
+        </Left> */}
         <Center>
           <IconContainer>
             <ForumIcon style={IconStyle} />
@@ -172,7 +172,7 @@ const Navbar = () => {
         <Right>
           <MailIconContainer>
             <Badge
-              badgeContent={notification.length}
+              badgeContent={notification.length - 1}
               color="primary"
               onClick={() => {
                 dispatch(toggleNotificationBar());
@@ -189,7 +189,7 @@ const Navbar = () => {
             />
           </DarkModeIconContainer>
           <UserContainer clicked={true} onClick={handleClick}>
-            <UserNameContainer>{User?.name}</UserNameContainer>
+            {/* <UserNameContainer>{User?.name}</UserNameContainer> */}
             <Img src={User?.image} />
           </UserContainer>
         </Right>

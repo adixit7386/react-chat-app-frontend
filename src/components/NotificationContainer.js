@@ -75,16 +75,19 @@ const PersonContainer = ({ toggle }) => {
       className="parent"
     >
       <Container>
-        {notification.map((item) => (
-          <NewNotification
-            onClick={() => {
-              handleClick(item);
-            }}
-          >
-            {/* {item?.content} */}
-            <Message>New Message from {item?.sender?.name}</Message>
-          </NewNotification>
-        ))}
+        {notification.map(
+          (item) =>
+            item !== null && (
+              <NewNotification
+                onClick={() => {
+                  handleClick(item);
+                }}
+              >
+                {/* {item?.content} */}
+                <Message>New Message from {item?.sender?.name}</Message>
+              </NewNotification>
+            )
+        )}
       </Container>
     </ParentContainer>
   );

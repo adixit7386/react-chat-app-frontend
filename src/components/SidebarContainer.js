@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import AddIcon from "@mui/icons-material/Add";
+import { getChatImage } from "../config/chatLogics";
 import axios from "axios";
 
 import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleCreateGroup } from "../redux/createGroupReducer";
-import { Mobile } from "../responsive";
+import { validURL } from "../config/chatLogics";
 const Container = Styled.div`
 flex:2;
 position:sticky;
 top:60px;
-height:calc(100vh - 60px);
+height:calc(100vh - 110px);
 overflow:scroll;
-&::-webkit-scrollbar {
-  display: none;
-};
 background-color:#f8f9fa;
 display:flex;
 align-items:start;
 justify-content:center;
 
-${Mobile((props) =>
-  props.active
-    ? { visibility: "hidden", flex: "0" }
-    : { visibility: "visible", flex: "1" }
-)};
+&::-webkit-scrollbar {
+  display: none;
+};
 `;
 
 const Wrapper = Styled.div`
@@ -39,6 +32,7 @@ justify-content:center;
 width:85%;
 flex-direction:column;`;
 const ChatContainer = Styled.div`
+display:flex;
 cursor:pointer;
 margin-top:20px;
 width:100%;
@@ -50,17 +44,7 @@ background-color:${(props) => (props.selected ? "lightgrey" : "#f6f9fa")};
 }
 transition:all 0.7s ease;
 `;
-// background-color:${(props) => (props.selected ? "lightgrey" : "#f6f9fa")};
-// box-shadow:0px 0px 5px gray;
-const ChatContainerHead = Styled.div`
-margin-top:20px;
-width:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:7px 12px;
-border-radius:5px;
-`;
+
 const ChatName = Styled.h1`
 margin:0px;
 font-size:20px;
@@ -71,85 +55,29 @@ color:grey;
 const LastMessageSender = Styled.span`
 font-weight:500;
 `;
-const Center = Styled.div`
 
-flex:1;
+const UserIconContainer = Styled.div`
 display:flex;
-position:sticky;
-top:20px;
-z-index:4;
 align-items:center;
 justify-content:center;
-margin-right:10px;
-`;
+flex:1;`;
+const UserDetails = Styled.div`
+flex:3;
+flex-direction:column;`;
 
-const InputContainer = Styled.div`
-flex:9;
-height:35px;
-display:flex;
-align-items:center;
-jusify-content:center;
-border:solid 2px gray;
-border-top-left-radius:50px;
-border-bottom-left-radius:50px;
-background-color:#f8f9fa;
-padding:2px 20px;
-
-`;
-const Input = Styled.input`
-background-color:#f8f9fa;
-font-size: 18px;
-font-size: 18px;
-flex: 1;
-border:none;
-width:200px;
-height: 30px;
-outline:none;
-
-&:focus{
- font-size: 18px;
-font-size: 18px;
-flex: 1;
-border:none;
-
-height: 35px;
-outline:none;
-}
-
-`;
-
-const SearchIconContainer = Styled.div`
-height:35px;
-width:35px;
-border:solid 2px gray;
-border-left:none;
-display:flex;
-align-items:center;
-jusify-content:center;
-border-top-right-radius:50px;
-border-bottom-right-radius:50px;
-background-color:#f8f9fa;
-padding:2px 4px;
-`;
-const Right = Styled.div`
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;`;
-
-const IconContainer = Styled.div`
-height:35px;
-width:35px;
+const Img = Styled.img`
+height:50px ;
 border-radius:50%;
-cursor:pointer;
-background-color:#f8f9fa;
-`;
+
+object-fit:cover;
+width:50px;`;
 const SidebarContainer = () => {
   const dispatch = useDispatch();
   const User = useSelector((state) => state.user.currentUser);
   const activeChat = useSelector((item) => item.activechat.active);
   const toggleUpdateChat = useSelector((state) => state.updatechats.toggle);
   const [chatList, setChatList] = useState([]);
+
   useEffect(() => {
     const fetchChat = async (userId) => {
       try {
@@ -170,10 +98,26 @@ const SidebarContainer = () => {
     };
     fetchChat();
   }, [toggleUpdateChat, User.accessToken]);
-  const IconStyle = {
-    height: "35px",
-    width: "35px",
-  };
+  let filteredChats;
+  // const handleSearch = (e) => {
+  //   setSearch(e.target.value);
+  //   // const filter = (item) => {
+  //   //   if (item.isGroupChat) {
+  //   //     return item.ChatName.toLowerCase().includes(search);
+  //   //   } else {
+  //   //     return getSender(User, item.users).toLowerCase().includes(search);
+  //   //   }
+  //   // };
+  //   filteredChats = chatList.filter((item) => {
+  //     if (item.isGroupChat) {
+  //       return item.ChatName.toLowerCase().includes(search);
+  //     } else {
+  //       return getSender(User, item.users).toLowerCase().includes(search);
+  //     }
+  //   });
+  // };
+  console.log(filteredChats);
+
   const handleActiveChat = (item) => {
     dispatch(setActiveChat(item));
   };
@@ -181,56 +125,38 @@ const SidebarContainer = () => {
   return (
     <Container active={activeChat === null ? false : true}>
       <Wrapper>
-        <ChatContainerHead>
-          <Center>
-            <InputContainer>
-              <Input placeholder="Chats" className="NavbarInput" />
-            </InputContainer>
-            <SearchIconContainer>
-              <SearchRoundedIcon
-                style={{
-                  height: "35px",
-                  width: "35px",
-                  cursor: "pointer",
-                  color: "gray",
-                  "@media max-width:(480px)": {
-                    height: "30px",
-                    width: "30px",
-                  },
-                }}
-              />
-            </SearchIconContainer>
-          </Center>
-          <Right>
-            <IconContainer>
-              <AddIcon
-                onClick={() => dispatch(toggleCreateGroup())}
-                style={IconStyle}
-              />
-            </IconContainer>
-          </Right>
-        </ChatContainerHead>
         {chatList?.map((item) => (
           <ChatContainer
             onClick={() => handleActiveChat(item)}
             selected={item._id === activeChat?._id ? true : false}
           >
-            <ChatName>
-              {item?.isGroupChat
-                ? item?.ChatName
-                : getSender(User, item?.users)}
-            </ChatName>
+            <UserIconContainer>
+              <Img
+                src={
+                  validURL(getChatImage(User, item.users))
+                    ? getChatImage(User, item.users)
+                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                }
+              />
+            </UserIconContainer>
+            <UserDetails>
+              <ChatName>
+                {item?.isGroupChat
+                  ? item?.ChatName
+                  : getSender(User, item?.users)}
+              </ChatName>
 
-            <LastMessageSender>
-              {item?.latestMessage[0]?.sender
-                ? `${item?.latestMessage[0]?.sender.name} : `
-                : ""}
-            </LastMessageSender>
-            <LastMessage>
-              {item?.latestMessage[0]?.content
-                ? item?.latestMessage[0]?.content
-                : "send first message"}
-            </LastMessage>
+              <LastMessageSender>
+                {item?.latestMessage[0]?.sender
+                  ? `${item?.latestMessage[0]?.sender.name} : `
+                  : ""}
+              </LastMessageSender>
+              <LastMessage>
+                {item?.latestMessage[0]?.content
+                  ? item?.latestMessage[0]?.content
+                  : "send first message"}
+              </LastMessage>
+            </UserDetails>
           </ChatContainer>
         ))}
       </Wrapper>

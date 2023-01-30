@@ -7,20 +7,28 @@ import { toggleSidebar } from "../redux/sideReducer";
 import { useNavigate } from "react-router-dom";
 import Toast from "../components/Toast";
 import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import { toggleCreateGroup } from "../redux/createGroupReducer";
+import { setActiveChat } from "../redux/activeChatReducer";
 import { toggleUpdateChat } from "../redux/updateChats";
 
 const ParentContainer = Styled.div`
-position:absolute;
-visibility:${(props) => (props.toggle === true ? "visible" : "hidden")};
-width:100vw;
-height:100vh;
 background-color:rgba(0,0,0,0.2);
-z-index:5;
-transition:all 1s ease;
+flex:2;
+top:60px;
+height:calc(100vh - 110px);
+overflow:scroll;
+&::-webkit-scrollbar {
+  display: none;
+};
+background-color:#f8f9fa;
+display:flex;
+align-items:start;
+justify-content:center;
 `;
 
 const Container = Styled.div`
-height:100vh;
+
 width:400px;
 background-color:#f8f9fa;
 display:flex;
@@ -33,11 +41,11 @@ overflow:scroll;
 }
 top:0px;
 transition:all 0.5s ease-out;
-box-shadow:0px 10px 20px grey;
-margin-left:${(props) => (props.toggle === true ? "0px" : "-400px")};
+
 
 
 `;
+// margin-left:${(props) => (props.toggle === true ? "0px" : "-400px")};
 
 const Wrapper = Styled.div`
 width:80%;
@@ -106,6 +114,17 @@ background-color:#f8f9fa;
 padding:2px 20px;
 
 `;
+const Centers = Styled.div`
+
+flex:1;
+display:flex;
+position:sticky;
+top:20px;
+z-index:4;
+align-items:center;
+justify-content:center;
+margin-right:10px;
+`;
 const Input = Styled.input`
 background-color:#f8f9fa;
 font-size: 18px;
@@ -143,19 +162,6 @@ background-color:#f8f9fa;
 padding:2px 4px;
 `;
 
-const IconContainer = Styled.div`
-display:flex;
-align-items:center;
-justify-content:center;
-`;
-const TitleContainer = Styled.div`
-padding:0px 10px 0px 10px;
-`;
-const SpanSearch = Styled.span`
-font-size:24px;
-cursor:pointer;
-color:grey;`;
-
 const UserIconContainer = Styled.div`
 display:flex;
 align-items:center;
@@ -176,19 +182,18 @@ height:50px ;
 border-radius:50%;
 object-fit:cover;
 width:50px;`;
+
+const Headings = Styled.div`
+margin:0px;
+font-size:20px;
+color:grey;
+`;
 const SearchBar = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const User = useSelector((state) => state.user.currentUser);
   let toggle = useSelector((state) => state.sidebar.toggle);
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-  const IconStyleSearch = {
-    height: "35px",
-    width: "35px",
-    color: "grey",
-    cursor: "pointer",
-  };
 
   const createChat = async (userId) => {
     try {
@@ -202,7 +207,9 @@ const SearchBar = () => {
           },
         }
       );
+
       dispatch(toggleSidebar());
+      dispatch(setActiveChat(data));
       dispatch(toggleUpdateChat());
     } catch (err) {
       console.log(err);
@@ -260,18 +267,12 @@ const SearchBar = () => {
       {isnotification && <Toast message={notification} />}
       <Container toggle={toggle}>
         <Wrapper>
-          <ItemTop item={"head"}>
-            <IconContainer>
-              <SearchRoundedIcon
-                onClick={() => dispatch(toggleSidebar())}
-                style={IconStyleSearch}
-              />
-            </IconContainer>
-            <TitleContainer>
-              <SpanSearch onClick={() => dispatch(toggleSidebar())}>
-                Search Users
-              </SpanSearch>
-            </TitleContainer>
+          <ItemTop>
+            <Centers>
+              <Headings onClick={() => dispatch(toggleCreateGroup())}>
+                Create new Group
+              </Headings>
+            </Centers>
           </ItemTop>
           <ItemTop item={"head"}>
             <Center>

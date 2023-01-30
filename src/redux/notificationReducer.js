@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const notificationSlice = createSlice({
   name: "notification",
   initialState: {
-    notification: [],
+    notification: [null],
   },
   reducers: {
     addMessage: (state, action) => {
@@ -19,7 +19,6 @@ const notificationSlice = createSlice({
       state.notification = state.notification.filter(
         (item) => item?._id !== action.payload._id
       );
-      state.notification = state.notification.filter((item) => item !== null);
 
       // let [action.payload , ...others]=state.notification;
     },

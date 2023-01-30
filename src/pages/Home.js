@@ -6,7 +6,7 @@ import SidebarContainer from "../components/SidebarContainer";
 import SearchBar from "../components/SearchBar";
 import CreateGroup from "../components/CreateGroup";
 import { Mobile } from "../responsive";
-
+import LeftSideContainer from "../components/LeftSideContainer";
 import { useSelector } from "react-redux";
 const Container = Styled.div`
 `;
@@ -25,12 +25,13 @@ const Home = () => {
   return (
     <Container>
       {createGroup && <CreateGroup />}
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       <Navbar />
 
       <Wrapper>
-        <SidebarContainer />
+        {/* <SidebarContainer /> */}
+        <LeftSideContainer />
         <ContentContainer />
       </Wrapper>
     </Container>
