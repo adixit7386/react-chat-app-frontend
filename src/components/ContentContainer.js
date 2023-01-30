@@ -239,7 +239,7 @@ const ContentContainer = () => {
     socket.on("connected", () => {
       setSocketConnected(true);
     });
-  }, []);
+  }, [User]);
   useEffect(() => {
     socket.on("typing", (activeChatId) => {
       if (activeChat?._id === activeChatId) {
@@ -272,9 +272,7 @@ const ContentContainer = () => {
 
         elem.scrollTop = elem.scrollHeight;
       }, 100);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     setLoading(true);
@@ -311,7 +309,7 @@ const ContentContainer = () => {
         }
       }
     });
-  }, []);
+  }, [dispatch, notification]);
   const sendMessage = async () => {
     socket.emit("stop typing", activeChat?._id);
     if (message === "") {

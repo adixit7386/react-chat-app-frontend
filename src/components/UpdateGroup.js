@@ -171,11 +171,11 @@ const CreateGroup = ({ toggle }) => {
   const User = useSelector((state) => state.user.currentUser);
   const [isnotification, setIsNotification] = useState(false);
   const [notification, setNotification] = useState("");
-  const [addedUsers, setAddedUsers] = useState([]);
+  // const [addedUsers, setAddedUsers] = useState([]);
   const [ChatName, setChatName] = useState("");
-  let usersArray = [];
+  // let usersArray = [];
 
-  addedUsers.map((item) => usersArray.push(item.userId));
+  // addedUsers.map((item) => usersArray.push(item.userId));
   const ManageNotification = (message) => {
     let msg = message;
     setTimeout(() => {
