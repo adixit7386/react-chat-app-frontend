@@ -1,8 +1,7 @@
 import React from "react";
 import Styled from "styled-components";
-
+import Badge from "@mui/material/Badge";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ForumIcon from "@mui/icons-material/Forum";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
@@ -10,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
 import { toggleAccountBar } from "../redux/accountReducer";
 import AccountContainer from "../components/AccountContainer";
+import { toggleNotificationBar } from "../redux/notificationBarReducer";
+import NotificationContainer from "./NotificationContainer";
 const Container = Styled.div`
+
 display:flex;
 align-items:center;
 background-color:white;
@@ -131,13 +133,18 @@ const Navbar = () => {
   };
   const toggleBar = useSelector((state) => state.accountbar.toggle);
   const User = useSelector((state) => state.user.currentUser);
+
+  const notification = useSelector((state) => state.notification.notification);
   const handleClick = async () => {
     dispatch(toggleAccountBar());
   };
-
+  console.log(notification);
   return (
     <Container>
       <AccountContainer toggle={toggleBar}></AccountContainer>
+      {notification.length > 0 && (
+        <NotificationContainer></NotificationContainer>
+      )}
       <Wrapper>
         <Left>
           <IconContainer>
@@ -164,9 +171,17 @@ const Navbar = () => {
         </Center>
         <Right>
           <MailIconContainer>
-            <NotificationsIcon
-              style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
-            />
+            <Badge
+              badgeContent={notification.length}
+              color="primary"
+              onClick={() => {
+                dispatch(toggleNotificationBar());
+              }}
+            >
+              <NotificationsIcon
+                style={DarkMode ? IconStyleDarkMode : IconStyleLightMode}
+              />
+            </Badge>
           </MailIconContainer>
           <DarkModeIconContainer>
             <DarkModeIcon

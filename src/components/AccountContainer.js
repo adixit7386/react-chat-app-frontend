@@ -108,7 +108,12 @@ const PersonContainer = ({ toggle }) => {
           <Heading>{user?.name}</Heading>
         </HeadingContainer>
         <ImageContainer>
-          <Image src={user?.image} />
+          <Image
+            src={
+              user?.image ||
+              "https://t4.ftcdn.net/jpg/05/09/59/75/240_F_509597532_RKUuYsERhODmkxkZd82pSHnFtDAtgbzJ.jpg"
+            }
+          />
         </ImageContainer>
         <EmailContainer>
           <HeadingEmail>{user?.email}</HeadingEmail>
