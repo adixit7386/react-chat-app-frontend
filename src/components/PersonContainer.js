@@ -3,7 +3,7 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 
-import { getSender } from "../config/chatLogics";
+import { getSender, getChatImage, getChatUserName } from "../config/chatLogics";
 const ParentContainer = Styled.div`
 position:absolute;
 top:0px;
@@ -51,6 +51,7 @@ margin:0px;
 width:100px ;
 border-radius:50%;
 border:solid 2px green;
+object-fit:cover;
 `;
 
 const EmailContainer = Styled.div`
@@ -101,10 +102,12 @@ const PersonContainer = ({ toggle }) => {
           </Heading>
         </HeadingContainer>
         <ImageContainer>
-          <Image src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
+          <Image src={getChatImage(User, activeChat?.users)} />
         </ImageContainer>
         <EmailContainer>
-          <HeadingEmail>{activeChat?.email}</HeadingEmail>
+          <HeadingEmail>
+            {getChatUserName(User, activeChat?.users)}
+          </HeadingEmail>
         </EmailContainer>
         <CloseContainer>
           <Button

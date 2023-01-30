@@ -8,6 +8,7 @@ import { getSender } from "../config/chatLogics";
 import { setActiveChat } from "../redux/activeChatReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleCreateGroup } from "../redux/createGroupReducer";
+import { Mobile } from "../responsive";
 const Container = Styled.div`
 flex:2;
 position:sticky;
@@ -21,6 +22,12 @@ background-color:#f8f9fa;
 display:flex;
 align-items:start;
 justify-content:center;
+
+${Mobile((props) =>
+  props.active
+    ? { visibility: "hidden", flex: "0" }
+    : { visibility: "visible", flex: "1" }
+)};
 `;
 
 const Wrapper = Styled.div`
@@ -172,7 +179,7 @@ const SidebarContainer = () => {
   };
 
   return (
-    <Container>
+    <Container active={activeChat === null ? false : true}>
       <Wrapper>
         <ChatContainerHead>
           <Center>

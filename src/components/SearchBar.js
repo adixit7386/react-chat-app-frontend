@@ -5,7 +5,6 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/sideReducer";
 import { useNavigate } from "react-router-dom";
-
 import Toast from "../components/Toast";
 import axios from "axios";
 import { toggleUpdateChat } from "../redux/updateChats";

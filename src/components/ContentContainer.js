@@ -2,22 +2,30 @@ import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
 import PersonContainer from "../components/PersonContainer";
 import SendIcon from "@mui/icons-material/Send";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useDispatch, useSelector } from "react-redux";
 import { togglePersonBar } from "../redux/personReducer";
 import { getSender } from "../config/chatLogics";
 import UpdateGroup from "./UpdateGroup";
+import { resetActiveChat } from "../redux/activeChatReducer";
 import io from "socket.io-client";
 import { addMessage } from "../redux/notificationReducer";
+import { Mobile } from "../responsive";
 import axios from "axios";
 
 const Container = Styled.div`
 flex:5;
 height:calc(100vh - 60px);
+
+${Mobile((props) =>
+  props.active ? { visibility: "visible" } : { display: "none", flex: "" }
+)};
 `;
 const Wrapper = Styled.div`
 padding:20px;
 padding-top:0px;
 height:calc(100vh - 100px);
+
 
 `;
 const HeadContainer = Styled.div`
@@ -201,6 +209,7 @@ font-size:25px;
 color:lightgrey;
 margin:0 auto;
 `;
+const BackwardContainer = Styled.div``;
 
 const ENDPOINT = "http://localhost:5000/";
 var socket, selectedChatCompare;
@@ -354,10 +363,18 @@ const ContentContainer = () => {
       }
     }, TimerLength);
   };
-  // console.log(activeChat);
-  console.log(notification);
+
+  const IconStyle = {
+    height: "35px",
+    width: "35px",
+    cursor: "pointer",
+    marginRight: "10px",
+  };
+  const handleResetActiveChat = () => {
+    dispatch(resetActiveChat());
+  };
   return (
-    <Container>
+    <Container active={activeChat === null ? false : true}>
       <Wrapper>
         {activeChat?.isGroupChat === true ? (
           <UpdateGroup toggle={toggleBar} />
@@ -369,6 +386,12 @@ const ContentContainer = () => {
           {/* <UserIconContainer onClick={handleClick}>
             <Img src={"https://avatars.githubusercontent.com/u/92628841?v=4"} />
           </UserIconContainer> */}
+          <ArrowBackIcon
+            onClick={() => {
+              handleResetActiveChat();
+            }}
+            style={IconStyle}
+          />
           <UserDetails onClick={handleClick}>
             <Heading>
               {activeChat?.isGroupChat
